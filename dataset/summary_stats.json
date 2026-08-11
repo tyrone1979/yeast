@@ -2,12 +2,10 @@
   "n_batches": 61,
   "n_full_process_batches": 10,
   "n_sparse_batches": 51,
-  "n_timeseries_rows": 1128,
+  "n_timeseries_rows": 1127,
+  "dropped_helper_only_rows": 1,
   "strain_ids": [
     "167"
-  ],
-  "recipes": [
-    "Diff"
   ],
   "lot_no_min": 2212,
   "lot_no_max": 2682,
@@ -18,6 +16,11 @@
     20,
     21
   ],
+  "missing_sugar_feed": {
+    "n_missing": 61,
+    "n_total": 1127,
+    "note": "Most missing sugar-feed values occur at time_h=0 (feed not yet started)."
+  },
   "descriptive_all": {
     "airflow_m3_h": {
       "n": 179,
@@ -148,11 +151,46 @@
       "max": 23058.0
     }
   },
-  "yield_stats": {
-    "n": 11,
-    "mean": 39016.5503,
-    "std": 336.4637,
+  "descriptive_full_process_sensitivity": {
+    "volume_excluding_B05": {
+      "n": 161,
+      "mean": 115.4304,
+      "std": 19.9205,
+      "min": 87.7,
+      "max": 149.3
+    },
+    "airflow_excluding_end_of_batch_gt_40000": {
+      "n": 177,
+      "mean": 16080.6102,
+      "std": 4537.0861,
+      "min": 4961.0,
+      "max": 20892.0
+    }
+  },
+  "yield_stats_full_process": {
+    "n": 10,
+    "mean": 39009.1892,
+    "std": 352.0405,
     "min": 38383.8634,
     "max": 39455.7233
+  },
+  "quality_flags": {
+    "volume_anomaly_batches": [
+      "B05"
+    ],
+    "duplicate_lot_pairs": [
+      [
+        "B10",
+        "B11",
+        2616
+      ],
+      [
+        "B25",
+        "B26",
+        2642
+      ]
+    ],
+    "airflow_outlier_note": "B04/B09 end-of-batch airflow values >40000 m3/h retained as recorded",
+    "sparse_biomass_extremes_note": "Some sparse batches contain early-phase biomass >60000 kg; flagged in batch notes"
   }
 }

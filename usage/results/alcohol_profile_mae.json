@@ -1,0 +1,60 @@
+{
+  "n_points": 161,
+  "n_batches": 9,
+  "mae_alcohol_vv_pct": 0.028490683229813667,
+  "excluded_batches": [
+    "B05"
+  ],
+  "batches": [
+    {
+      "batch_id": "B01",
+      "n": 18,
+      "mae_alcohol_vv_pct": 0.016833333333333336
+    },
+    {
+      "batch_id": "B02",
+      "n": 17,
+      "mae_alcohol_vv_pct": 0.03135294117647059
+    },
+    {
+      "batch_id": "B03",
+      "n": 18,
+      "mae_alcohol_vv_pct": 0.03594444444444445
+    },
+    {
+      "batch_id": "B04",
+      "n": 18,
+      "mae_alcohol_vv_pct": 0.0345
+    },
+    {
+      "batch_id": "B06",
+      "n": 18,
+      "mae_alcohol_vv_pct": 0.026111111111111116
+    },
+    {
+      "batch_id": "B07",
+      "n": 18,
+      "mae_alcohol_vv_pct": 0.036500000000000005
+    },
+    {
+      "batch_id": "B08",
+      "n": 18,
+      "mae_alcohol_vv_pct": 0.01627777777777778
+    },
+    {
+      "batch_id": "B09",
+      "n": 18,
+      "mae_alcohol_vv_pct": 0.04122222222222222
+    },
+    {
+      "batch_id": "B10",
+      "n": 18,
+      "mae_alcohol_vv_pct": 0.017833333333333336
+    }
+  ],
+  "source_files": [
+    "batch_metadata.csv",
+    "fermentation_timeseries.csv",
+    "evaluation_profiles.csv"
+  ]
+}

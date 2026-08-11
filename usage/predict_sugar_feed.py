@@ -266,6 +266,67 @@ def build_model(name: str, n_features: int) -> nn.Module:
     raise ValueError(f"Unknown model: {name}")
 
 
+def load_evaluation_profiles() -> dict[float, dict[str, float | None]]:
+    rows = read_csv(DATASET / "evaluation_profiles.csv")
+    out: dict[float, dict[str, float | None]] = {}
+    for r in rows:
+        t = to_float(r.get("time_h"))
+        if t is None:
+            continue
+        out[t] = {
+            "alcohol_profile_vv_pct": to_float(r.get("alcohol_profile_vv_pct")),
+            "growth_modulus_profile": to_float(r.get("growth_modulus_profile")),
+        }
+    return out
+
+
+def alcohol_profile_tracking(exclude_batches: set[str] | None = None) -> dict:
+    """Compare measured alcohol to evaluation_profiles.csv (uses that file explicitly)."""
+    exclude_batches = exclude_batches or set()
+    profiles = load_evaluation_profiles()
+    meta = read_csv(DATASET / "batch_metadata.csv")
+    full_ids = {
+        r["batch_id"]
+        for r in meta
+        if r.get("data_completeness") == "full_process"
+        and r["batch_id"] not in exclude_batches
+    }
+    rows = read_csv(DATASET / "fermentation_timeseries.csv")
+    per_batch: list[dict] = []
+    all_abs = []
+    for bid in sorted(full_ids):
+        errs = []
+        for r in rows:
+            if r["batch_id"] != bid:
+                continue
+            t = to_float(r.get("time_h"))
+            a = to_float(r.get("alcohol_vv_pct"))
+            if t is None or a is None or t not in profiles:
+                continue
+            pref = profiles[t]["alcohol_profile_vv_pct"]
+            if pref is None:
+                continue
+            errs.append(abs(a - pref))
+        if not errs:
+            continue
+        mae = float(np.mean(errs))
+        per_batch.append({"batch_id": bid, "n": len(errs), "mae_alcohol_vv_pct": mae})
+        all_abs.extend(errs)
+    overall = {
+        "n_points": len(all_abs),
+        "n_batches": len(per_batch),
+        "mae_alcohol_vv_pct": float(np.mean(all_abs)) if all_abs else float("nan"),
+        "excluded_batches": sorted(exclude_batches),
+        "batches": per_batch,
+        "source_files": [
+            "batch_metadata.csv",
+            "fermentation_timeseries.csv",
+            "evaluation_profiles.csv",
+        ],
+    }
+    return overall
+
+
 def run_lobo(args: argparse.Namespace) -> dict:
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() and not args.cpu else "cpu")
@@ -373,24 +434,54 @@ def parse_args() -> argparse.Namespace:
         help="Comma-separated batch IDs to exclude (default: B05 volume anomaly)",
     )
     p.add_argument(
+        "--profile-only",
+        action="store_true",
+        help="Only compute alcohol vs evaluation_profiles.csv MAE (no model training)",
+    )
+    p.add_argument(
+        "--skip-profile",
+        action="store_true",
+        help="Skip alcohol-profile tracking when training",
+    )
+    p.add_argument(
         "--out",
         type=Path,
         default=ROOT / "usage" / "results" / "lobo_metrics.json",
+    )
+    p.add_argument(
+        "--profile-out",
+        type=Path,
+        default=ROOT / "usage" / "results" / "alcohol_profile_mae.json",
     )
     return p.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    result = run_lobo(args)
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    # Make JSON-safe
-    payload = {
-        k: v
-        for k, v in result.items()
-        if k != "folds"
-    }
+    exclude = {b.strip() for b in args.exclude_batches.split(",") if b.strip()}
+
+    if not args.skip_profile or args.profile_only:
+        prof = alcohol_profile_tracking(exclude_batches=exclude)
+        args.profile_out.write_text(json.dumps(prof, indent=2), encoding="utf-8")
+        print(
+            f"Alcohol vs evaluation_profiles: "
+            f"MAE={prof['mae_alcohol_vv_pct']:.4f} v/v% "
+            f"(n={prof['n_points']} points, {prof['n_batches']} batches)"
+        )
+        print(f"Saved profile metrics to {args.profile_out}")
+        if args.profile_only:
+            return
+
+    result = run_lobo(args)
+    payload = {k: v for k, v in result.items() if k != "folds"}
     payload["folds"] = result["folds"]
+    payload["dataset_files_used"] = [
+        "batch_metadata.csv",
+        "fermentation_timeseries.csv",
+        "evaluation_profiles.csv",
+    ]
+    payload["dataset_files_not_used"] = ["summary_stats.json", "README.md"]
     args.out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(f"\nSaved metrics to {args.out}")
 

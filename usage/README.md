@@ -1,6 +1,17 @@
 # Usage: sugar feed-rate prediction
 
-This example shows that the released dataset can train a simple sequence model to predict nutrient addition (`sugar_feed_rate_kg_rs_h`).
+This example shows that the released dataset can train a simple sequence model to predict nutrient addition (`sugar_feed_rate_kg_rs_h`), and that `evaluation_profiles.csv` can be used for alcohol-profile tracking.
+
+## Scope (which files are used)
+
+| Dataset file | Role in this demo |
+|--------------|-------------------|
+| `batch_metadata.csv` | Select `full_process` batches |
+| `fermentation_timeseries.csv` | Features + sugar-feed labels |
+| `evaluation_profiles.csv` | Alcohol trajectory reference (MAE vs measured) |
+| `summary_stats.json` | Not used (paper statistics only) |
+
+The demo trains on the **full_process subset** (default excludes `B05`). The 51 sparse batches are not used for model training; they remain available for larger-sample or transfer studies.
 
 ## Task
 
@@ -26,11 +37,14 @@ pip install -r requirements.txt
 python usage/predict_sugar_feed.py --model bilstm
 python usage/predict_sugar_feed.py --model cnn
 
+# alcohol vs evaluation profile only (no training)
+python usage/predict_sugar_feed.py --profile-only
+
 # include all full-process batches (including B05)
 python usage/predict_sugar_feed.py --exclude-batches ""
 ```
 
-Metrics are printed per held-out batch and saved to `usage/results/lobo_metrics.json`.
+Metrics are printed per held-out batch and saved to `usage/results/lobo_metrics.json`. Profile MAE is saved to `usage/results/alcohol_profile_mae.json`.
 
 ## Example result (BiLSTM, exclude B05)
 

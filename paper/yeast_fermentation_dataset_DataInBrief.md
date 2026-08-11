@@ -22,7 +22,7 @@ Yeast fermentation; Fed-batch culture; Nutrient addition; Sugar feed rate; Indus
 
 **Abstract**
 
-This data article presents an industrial baker’s-yeast fed-batch fermentation dataset curated for nutrient-addition (primarily reducing-sugar feed-rate) prediction. The primary source materials are batch PDF logs completed by experienced plant operators and technicians during production, based on on-site process measurements and observations. These expert records were digitized into analysis-ready tables, yielding 61 production batches and 1,128 hourly records of process variables including alcohol concentration, biomass (Y30), sugar feed rate, and—for a 10-batch full-process subset—airflow, volume, pH, cell concentration, and growth modulus. All released files are UTF-8 CSV with documented headers. The dataset supports development and benchmarking of machine-learning and deep-learning models for fed-batch nutrient dosing, process monitoring, and transfer learning across fermentation batches. Data are intended for deposition in a public repository under an open license.
+This data article presents an industrial baker’s-yeast fed-batch fermentation dataset curated for nutrient-addition (primarily reducing-sugar feed-rate) prediction. The primary source materials are batch PDF logs completed by experienced plant operators and technicians during production, based on on-site process measurements and observations. These expert records were digitized into analysis-ready tables, yielding 61 production batches and 1,127 hourly records of process variables including alcohol concentration, biomass (Y30), sugar feed rate, and—for a 10-batch full-process subset—airflow, volume, pH, cell concentration, and growth modulus. All released files are UTF-8 CSV with documented headers. Original PDF sheets are retained by the data owners and are not redistributed with the public package. The dataset supports development and benchmarking of machine-learning and deep-learning models for fed-batch nutrient dosing, process monitoring, and transfer learning across fermentation batches. Data are intended for deposition in a public repository under an open license.
 
 # SPECIFICATIONS TABLE
 
@@ -32,7 +32,7 @@ This data article presents an industrial baker’s-yeast fed-batch fermentation 
 | Specific subject area | Industrial yeast fed-batch fermentation; nutrient feed-rate time series |
 | Type of data | Table: CSV process records and batch metadata digitized from expert-completed industrial PDF batch logs |
 | Data collection | Hourly fermentation variables were measured and recorded by experienced operators/technicians on industrial batch PDF sheets during fed-batch yeast production. Recorded quantities include aeration, volume, pH, alcohol, cell/biomass measures, growth modulus, and reducing-sugar feed rate. The PDF logs were subsequently digitized into structured CSV tables for public release. No smoothing or imputation was applied. |
-| Data source location | Industrial yeast fermentation facility production records (institution to be specified by data owners before submission). Example original PDF batch logs are archived under `dataset/raw_pdfs/`. |
+| Data source location | Industrial yeast fermentation facility production records (institution to be specified by data owners before submission). Original PDF batch logs remain with the data owners and are not part of the public deposit. |
 | Data accessibility | Repository name: [figshare/Zenodo — to be completed] Data identification number: [DOI — to be completed] Direct URL to data: [https://doi.org/… — to be completed] |
 | Related research article | none / [to be completed] |
 
@@ -60,17 +60,17 @@ The present dataset was curated from industrial production batch logs. Experienc
 
 # DATA DESCRIPTION
 
-The dataset package consists of primary CSV files, documentation, and example original PDF batch logs. Table 1 summarizes the file inventory. Overview plots used in this article (Figs. 1–4) are manuscript materials and are not included in the public dataset deposit.
+The dataset package consists of primary CSV files and documentation. Table 1 summarizes the file inventory. Overview plots used in this article (Figs. 1–4) are manuscript materials and are not included in the public dataset deposit.
 
 **Table 1. File inventory for the dataset.**
 
 | File name | Format | Description |
 |-----------|--------|-------------|
 | `batch_metadata.csv` | CSV | One row per batch (n = 61): lot number, strain, seed information, yield, completeness flag |
-| `fermentation_timeseries.csv` | CSV | Stacked hourly records (n = 1,128) across all batches |
+| `fermentation_timeseries.csv` | CSV | Stacked hourly records (n = 1,127) across all batches |
 | `evaluation_profiles.csv` | CSV | Reference alcohol and growth-modulus profiles used for batch evaluation |
+| `summary_stats.json` | JSON | Machine-readable descriptive statistics and quality flags |
 | `README.md` | Markdown | Column definitions, completeness notes, recommended prediction task |
-| `raw_pdfs/*.PDF` | PDF | Example original expert-completed industrial batch logs (12 files) |
 
 Table 2 provides the column definitions for the primary timeseries file `fermentation_timeseries.csv`, including units and representative example values.
 
@@ -108,7 +108,7 @@ As shown in Table 3, the release contains two completeness tiers: ten full-proce
 
 ## Source records and expert data generation
 
-The primary source materials are industrial fed-batch yeast fermentation **PDF batch logs**. During production, experienced operators and technicians performed process measurements (e.g., airflow, volume, pH, alcohol, cell/biomass-related quantities) and recorded the observed values, together with the sugar feed adjustments made during the run, onto standardized batch sheets archived as PDF files. Representative original PDFs are stored in `dataset/raw_pdfs/` (for example, `2291-D(2284).PDF`, `2317-D(2303).PDF`, `2324-D(2316).PDF`, and related lot sheets).
+The primary source materials are industrial fed-batch yeast fermentation **PDF batch logs**. During production, experienced operators and technicians performed process measurements (e.g., airflow, volume, pH, alcohol, cell/biomass-related quantities) and recorded the observed values, together with the sugar feed adjustments made during the run, onto standardized batch sheets archived as PDF files. The original PDFs remain with the data owners for provenance and are **not** redistributed in the public CSV package.
 
 These expert-completed PDF records constitute the authoritative origin of the numerical values in this release. Digitization into tabular form was performed subsequently to enable computational reuse; the released CSVs are intended to preserve the recorded measurements and feed decisions without algorithmic alteration.
 
@@ -129,13 +129,15 @@ The pathway from expert PDF logs to the public CSV release is summarized in Tabl
 3. Digitized batch tables were assembled into stacked CSV releases with English, machine-readable headers (`batch_metadata.csv`, `fermentation_timeseries.csv`).
 4. Completeness flags were assigned (`full_process` vs `alcohol_sugar_biomass`; Table 3) according to available covariates.
 5. No imputation, smoothing, or unit renormalization was applied. Empty cells remain empty.
-6. Batch `B05` retains volume values that are approximately an order of magnitude larger than peer batches; this is flagged in `batch_metadata.csv` notes and treated as a raw recording anomaly.
+6. Hourly rows containing only helper fields (no process variables) were removed during packaging (one such row in B02).
+7. Batch `B05` retains volume values that are approximately an order of magnitude larger than peer batches; this is flagged in `batch_metadata.csv` notes and treated as a raw recording anomaly.
+8. End-of-batch airflow values > 40,000 m³/h (B04, B09), duplicate lot headers (B10/B11), and sparse early-phase biomass extremes are flagged in metadata / `summary_stats.json`.
 
 **Table 4. Data flow from expert PDF logs to released CSVs.**
 
 | Stage | Component | Function | Output |
 |-------|-----------|----------|--------|
-| 1 | Industrial PDF batch logs | Expert measurement and handwritten/typed recording during production | `dataset/raw_pdfs/*.PDF` |
+| 1 | Industrial PDF batch logs | Expert measurement and handwritten/typed recording during production | Source archive (data owners; not redistributed) |
 | 2 | Digitization | Transfer recorded values into structured batch tables | Tabular batch records |
 | 3 | Dataset packaging | Normalize identifiers, stack timeseries, document headers | CSV files |
 | 4 | Metadata tagging | Completeness flags and anomaly notes | `batch_metadata.csv` |
@@ -165,7 +167,7 @@ Table 5 reports descriptive statistics (mean, standard deviation, minimum, and m
 | Biomass Y30 (kg) | 1127 | 25562.1 | 13250.1 | 1417 | 71101 |
 | Sugar feed (kg RS/h) | 1066 | 1300.5 | 478.2 | 127 | 2194 |
 
-Note: As indicated by the volume range in Table 5, volume maxima are dominated by batch B05; users analysing volume should either exclude B05 or apply batch-wise robust scaling.
+Notes to Tables 5–6: (i) Volume mean/SD/max in Table 5 are dominated by B05; excluding B05 yields volume mean ≈ 115.4 m³ (SD ≈ 19.9; range 87.7–149.3). (ii) Airflow max = 49992 arises from two end-of-batch outliers (B04, B09); excluding values > 40,000 m³/h yields airflow mean ≈ 16080.6 (max 20892). (iii) Biomass max in Table 6 reflects sparse-batch early-phase extremes (> 60,000 kg) flagged in metadata. (iv) Full-process yield statistics (B01–B10 only; n = 10): mean 39009.2 kg Y30 (SD 352.0).
 
 **Fig. 3.** Median pH (left) and airflow (right) versus fermentation hour with IQR bands (full-process batches, excluding B05).
 
@@ -176,9 +178,9 @@ Note: As indicated by the volume range in Table 5, volume maxima are dominated b
 Prior to release, the following checks were performed:
 
 - **Completeness check:** Counted non-missing values per variable and tagged batches as `full_process` or `alcohol_sugar_biomass`.
-- **Range screening:** Verified alcohol ≥ 0, pH roughly 3–8, growth modulus near 1–1.6, and sugar feed rates within physically plausible magnitudes for industrial fed-batch operation.
-- **Batch integrity:** Confirmed `time_h` is unique within each `batch_id` and monotonically non-decreasing.
-- **Source traceability:** Confirmed that example original PDF batch logs are archived alongside the digitized tables.
+- **Range screening:** Verified alcohol ≥ 0, pH roughly 3–8, growth modulus near 1–1.6, and sugar feed rates within physically plausible magnitudes for industrial fed-batch operation; flagged volume, airflow, and biomass outliers retained as recorded.
+- **Batch integrity:** Confirmed `time_h` is unique within each `batch_id` and monotonically non-decreasing; removed helper-only empty rows.
+- **Provenance:** Digitized values originate from expert-completed industrial PDF batch logs retained by the data owners (not redistributed).
 
 The outcomes of these checks are summarized in Table 7.
 
@@ -187,12 +189,13 @@ The outcomes of these checks are summarized in Table 7.
 | Check | Outcome |
 |-------|---------|
 | Batches in CSV release | 61 |
-| Timeseries rows | 1,128 |
+| Timeseries rows | 1,127 |
 | Full-process batches | 10 |
-| Example original PDF logs | 12 files in `dataset/raw_pdfs/` |
-| Missing sugar feed rate | 62/1,128 (5.5%) |
-| Missing alcohol | 1/1,128 (0.1%) |
+| Missing sugar feed rate | 61/1,127 (5.4%); mostly at `time_h = 0` |
+| Missing alcohol | 0/1,127 |
 | Flagged volume anomaly | B05 |
+| Flagged airflow outliers | B04, B09 (end-of-batch > 40,000 m³/h) |
+| Duplicate lot header | B10/B11 (lot 2616); yield stats use full-process n = 10 |
 | Imputation applied | None |
 
 ## Example workflow for data loading
@@ -203,7 +206,7 @@ The CSV files can be opened in any standard spreadsheet or scientific computing 
 
 **Feed-rate prediction baseline.** Using full-process batches, a BiLSTM (or 1D-CNN) model can predict current sugar feed rate from a short window of recent process variables. In a leave-one-batch-out evaluation on nine full-process batches (excluding the anomalous-volume batch B05), the accompanying usage example achieved pooled MAE ≈ 102.5 kg RS/h, MAPE ≈ 11.6%, and R² ≈ 0.872, demonstrating that the digitized expert records are usable for supervised nutrient-addition prediction. Details of the executable example are given under Code availability.
 
-**Profile tracking.** Differences between measured alcohol and `evaluation_profiles.csv` provide a batch-quality indicator; batches with persistently elevated alcohol relative to the profile are candidates for feed-rate oversupply studies.
+**Profile tracking.** Differences between measured alcohol and `evaluation_profiles.csv` provide a batch-quality indicator; batches with persistently elevated alcohol relative to the profile are candidates for feed-rate oversupply studies. The usage script reports alcohol-vs-profile MAE for full-process batches (`usage/results/alcohol_profile_mae.json`).
 
 **Cross-batch generalization.** Because records come from multiple production lots, leave-one-batch-out or leave-several-lots-out validation is recommended to assess robustness under industrial lot shift.
 
@@ -212,9 +215,9 @@ The CSV files can be opened in any standard spreadsheet or scientific computing 
 - **Single strain context:** Released batches share strain ID 167; cross-strain generalization cannot be assessed from this release alone.
 - **Uneven covariate coverage:** Only 10 batches include rich process covariates; 51 batches are sparse.
 - **Hourly resolution:** Records are hourly operator/log-sheet resolution rather than high-frequency continuous sensor streams.
-- **Digitization from PDF logs:** Values were transferred from expert-completed PDF sheets; handwriting/transcription artefacts may exist and are retained when present.
-- **Incomplete PDF archive in the package:** The repository includes example original PDFs; not every digitized batch PDF is necessarily redistributed with the public package.
-- **Possible recording anomaly:** Volume values in B05 appear inflated relative to peers and should be handled cautiously.
+- **Digitization from PDF logs:** Values were transferred from expert-completed PDF sheets; handwriting/transcription artefacts may exist and are retained when present. Original PDFs are not part of the public deposit.
+- **Recording anomalies retained:** Volume values in B05 appear inflated; B04/B09 include extreme end-of-batch airflow; some sparse batches show early-phase biomass extremes (> 60,000 kg). These are flagged but not corrected.
+- **Duplicate lot headers:** B10 and B11 share lot 2616; B11 is an incomplete sparse sheet and should not be treated as an independent full-information batch.
 - **Confidential plant metadata:** Exact plant identity, calendar dates, and operator identities are not included.
 - **Repository DOI pending:** Public DOI/URL placeholders must be completed upon deposition.
 
@@ -232,7 +235,7 @@ Changning Ren: Conceptualization, Data curation, Investigation, Methodology, Wri
 
 # DATA AVAILABILITY
 
-The datasets will be deposited on [figshare/Zenodo] (DOI: [to be completed]). Repository contents include the files listed in Table 1: CSV tables, `README.md`, and example original PDF batch logs under `raw_pdfs/`. Manuscript figures (Figs. 1–4) are not part of the dataset deposit.
+The datasets will be deposited on [figshare/Zenodo] (DOI: [to be completed]). Repository contents include the files listed in Table 1 (CSV/JSON tables and `README.md`). Manuscript figures (Figs. 1–4) are not part of the dataset deposit.
 
 # CODE AVAILABILITY
 
