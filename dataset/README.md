@@ -48,7 +48,7 @@ Empty cells denote values not recorded in the source workbook (not imputed).
 
 Predict `sugar_feed_rate_kg_rs_h` at hour *t* (or *t+1*) from recent process states (`alcohol_vv_pct`, `biomass_y30_kg`, `ph`, `airflow_m3_h`, `growth_modulus`, etc.), optionally conditioned on `protocol_hourly_setpoints.csv`.
 
-For deep-learning experiments aligned with dual temporal–spatial fermentation models, construct sliding windows over consecutive hours within each `batch_id`.
+A ready-to-run example with BiLSTM / 1D-CNN leave-one-batch-out evaluation is in [`usage/`](../usage/).
 
 ## Provenance
 
