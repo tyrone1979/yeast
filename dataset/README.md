@@ -68,4 +68,10 @@ A ready-to-run example with BiLSTM / 1D-CNN leave-one-batch-out evaluation (plus
 
 ## License / citation
 
-Deposit the `dataset/` folder in a public repository (e.g., figshare / Zenodo) and replace the placeholder DOI in the accompanying Data in Brief manuscript before submission.
+This package is deposited on figshare: https://doi.org/10.6084/m9.figshare.33201579
+
+```text
+Ren C., Zhao L., Kang L., Guo Q. An industrial yeast fed-batch fermentation
+dataset for nutrient feed-rate prediction. figshare (2026).
+https://doi.org/10.6084/m9.figshare.33201579
+```

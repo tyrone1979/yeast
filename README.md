@@ -83,13 +83,14 @@ Dalian Neusoft University of Information, Dalian, China
 
 ## Citation
 
-Until a journal DOI / figshare DOI is available, cite this repository:
-
 ```text
-Ren C., Zhao L., Kang L., Guo Q. Industrial yeast fed-batch fermentation
-dataset for nutrient feed-rate prediction. https://gitee.com/sacourse/yeast
+Ren C., Zhao L., Kang L., Guo Q. An industrial yeast fed-batch fermentation
+dataset for nutrient feed-rate prediction. figshare (2026).
+https://doi.org/10.6084/m9.figshare.33201579
 ```
+
+Code companion: https://gitee.com/sacourse/yeast
 
 ## License
 
-Data and code sharing terms will follow the public deposit (figshare/Zenodo) and journal requirements. Update this section when the deposit DOI is finalized.
+Follow the license stated on the figshare deposit (https://doi.org/10.6084/m9.figshare.33201579).

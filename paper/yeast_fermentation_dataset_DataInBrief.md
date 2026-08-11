@@ -22,7 +22,7 @@ Yeast fermentation; Fed-batch culture; Nutrient addition; Sugar feed rate; Indus
 
 **Abstract**
 
-This data article presents an industrial baker’s-yeast fed-batch fermentation dataset curated for nutrient-addition (primarily reducing-sugar feed-rate) prediction. The primary source materials are batch PDF logs completed by experienced plant operators and technicians during production, based on on-site process measurements and observations. These expert records were digitized into analysis-ready tables, yielding 61 production batches and 1,127 hourly records of process variables including alcohol concentration, biomass (Y30), sugar feed rate, and—for a 10-batch full-process subset—airflow, volume, pH, cell concentration, and growth modulus. All released files are UTF-8 CSV with documented headers. Original PDF sheets are retained by the data owners and are not redistributed with the public package. The dataset supports development and benchmarking of machine-learning and deep-learning models for fed-batch nutrient dosing, process monitoring, and transfer learning across fermentation batches. Data are intended for deposition in a public repository under an open license.
+This data article presents an industrial baker’s-yeast fed-batch fermentation dataset curated for nutrient-addition (primarily reducing-sugar feed-rate) prediction. The primary source materials are batch PDF logs completed by experienced plant operators and technicians during production, based on on-site process measurements and observations. These expert records were digitized into analysis-ready tables, yielding 61 production batches and 1,127 hourly records of process variables including alcohol concentration, biomass (Y30), sugar feed rate, and—for a 10-batch full-process subset—airflow, volume, pH, cell concentration, and growth modulus. All released files are UTF-8 CSV with documented headers. Original PDF sheets are retained by the data owners and are not redistributed with the public package. The dataset supports development and benchmarking of machine-learning and deep-learning models for fed-batch nutrient dosing, process monitoring, and transfer learning across fermentation batches. The dataset is deposited on figshare under DOI 10.6084/m9.figshare.33201579 [8].
 
 # SPECIFICATIONS TABLE
 
@@ -33,7 +33,7 @@ This data article presents an industrial baker’s-yeast fed-batch fermentation 
 | Type of data | Table: CSV process records and batch metadata digitized from expert-completed industrial PDF batch logs |
 | Data collection | Hourly fermentation variables were measured and recorded by experienced operators/technicians on industrial batch PDF sheets during fed-batch yeast production. Recorded quantities include aeration, volume, pH, alcohol, cell/biomass measures, growth modulus, and reducing-sugar feed rate. The PDF logs were subsequently digitized into structured CSV tables for public release. No smoothing or imputation was applied. |
 | Data source location | Industrial yeast fermentation facility production records (institution to be specified by data owners before submission). Original PDF batch logs remain with the data owners and are not part of the public deposit. |
-| Data accessibility | Repository name: [figshare/Zenodo — to be completed] Data identification number: [DOI — to be completed] Direct URL to data: [https://doi.org/… — to be completed] |
+| Data accessibility | Repository name: figshare Data identification number: 10.6084/m9.figshare.33201579 Direct URL to data: https://doi.org/10.6084/m9.figshare.33201579 |
 | Related research article | none / [to be completed] |
 
 # VALUE OF THE DATA
@@ -60,7 +60,7 @@ The present dataset was curated from industrial production batch logs. Experienc
 
 # DATA DESCRIPTION
 
-The dataset package consists of primary CSV files and documentation. Table 1 summarizes the file inventory. Overview plots used in this article (Figs. 1–4) are manuscript materials and are not included in the public dataset deposit.
+The dataset package consists of primary CSV files and documentation and is publicly available on figshare [8]. Table 1 summarizes the file inventory. Overview plots used in this article (Figs. 1–4) are manuscript materials and are not included in the public dataset deposit.
 
 **Table 1. File inventory for the dataset.**
 
@@ -219,7 +219,6 @@ The CSV files can be opened in any standard spreadsheet or scientific computing 
 - **Recording anomalies retained:** Volume values in B05 appear inflated; B04/B09 include extreme end-of-batch airflow; some sparse batches show early-phase biomass extremes (> 60,000 kg). These are flagged but not corrected.
 - **Duplicate lot headers:** B10 and B11 share lot 2616; B11 is an incomplete sparse sheet and should not be treated as an independent full-information batch.
 - **Confidential plant metadata:** Exact plant identity, calendar dates, and operator identities are not included.
-- **Repository DOI pending:** Public DOI/URL placeholders must be completed upon deposition.
 
 # ETHICS STATEMENT
 
@@ -235,7 +234,7 @@ Changning Ren: Conceptualization, Data curation, Investigation, Methodology, Wri
 
 # DATA AVAILABILITY
 
-The datasets will be deposited on [figshare/Zenodo] (DOI: [to be completed]). Repository contents include the files listed in Table 1 (CSV/JSON tables and `README.md`). Manuscript figures (Figs. 1–4) are not part of the dataset deposit.
+The dataset described in this article is available on figshare under DOI [10.6084/m9.figshare.33201579](https://doi.org/10.6084/m9.figshare.33201579) [8]. Repository contents include the files listed in Table 1 (CSV/JSON tables and `README.md`). Manuscript figures (Figs. 1–4) are not part of the dataset deposit.
 
 # CODE AVAILABILITY
 
@@ -260,3 +259,5 @@ The authors declare that they have no known competing financial interests or per
 [6] S.J. Pan, Q. Yang, A survey on transfer learning, IEEE Trans. Knowl. Data Eng. 22 (2010) 1345–1359. https://doi.org/10.1109/TKDE.2009.35.
 
 [7] Z. Ge, Z. Song, S. X. Ding, B. Huang, Data mining and analytics in the process industry: the role of machine learning, IEEE Access 5 (2017) 20590–20616. https://doi.org/10.1109/ACCESS.2017.2756872.
+
+[8] C. Ren, L. Zhao, L. Kang, Q. Guo, An industrial yeast fed-batch fermentation dataset for nutrient feed-rate prediction, figshare (2026). https://doi.org/10.6084/m9.figshare.33201579.
