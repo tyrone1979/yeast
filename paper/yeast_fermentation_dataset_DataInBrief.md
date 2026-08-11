@@ -22,7 +22,7 @@ Yeast fermentation; Fed-batch culture; Nutrient addition; Sugar feed rate; Indus
 
 **Abstract**
 
-This data article presents an industrial baker’s-yeast fed-batch fermentation dataset curated for nutrient-addition (primarily reducing-sugar feed-rate) prediction. The primary source materials are batch PDF logs completed by experienced plant operators and technicians during production, based on on-site process measurements and observations. These expert records were digitized into analysis-ready tables, yielding 61 production batches and 1,127 hourly records of process variables including alcohol concentration, biomass (Y30), sugar feed rate, and—for a 10-batch full-process subset—airflow, volume, pH, cell concentration, and growth modulus. All released files are UTF-8 CSV with documented headers. Original PDF sheets are retained by the data owners and are not redistributed with the public package. The dataset supports development and benchmarking of machine-learning and deep-learning models for fed-batch nutrient dosing, process monitoring, and transfer learning across fermentation batches. The dataset is deposited on figshare under DOI 10.6084/m9.figshare.33201579 [8].
+This data article presents an industrial baker’s-yeast fed-batch fermentation dataset curated for nutrient-addition (primarily reducing-sugar feed-rate) prediction. The primary source materials are batch PDF logs completed by experienced plant operators and technicians during production, based on on-site process measurements and observations. These expert records were digitized into analysis-ready tables, yielding 61 production batches and 1,127 hourly records of process variables including alcohol concentration, biomass (Y30), sugar feed rate, and—for a 10-batch full-process subset—airflow, volume, pH, cell concentration, and growth modulus. All released files are UTF-8 CSV with documented headers. Original PDF sheets are retained by the data owners and are not redistributed with the public package. The dataset supports development and benchmarking of machine-learning and deep-learning models for fed-batch nutrient dosing, process monitoring, and transfer learning across fermentation batches. The dataset is deposited on figshare under DOI https://doi.org/10.6084/m9.figshare.33201579 [8].
 
 # SPECIFICATIONS TABLE
 
@@ -234,7 +234,7 @@ Changning Ren: Conceptualization, Data curation, Investigation, Methodology, Wri
 
 # DATA AVAILABILITY
 
-The dataset described in this article is available on figshare under DOI [10.6084/m9.figshare.33201579](https://doi.org/10.6084/m9.figshare.33201579) [8]. Repository contents include the files listed in Table 1 (CSV/JSON tables and `README.md`). Manuscript figures (Figs. 1–4) are not part of the dataset deposit.
+The dataset described in this article is available on figshare under DOI https://doi.org/10.6084/m9.figshare.33201579 [8]. Repository contents include the files listed in Table 1 (CSV/JSON tables and `README.md`). Manuscript figures (Figs. 1–4) are not part of the dataset deposit.
 
 # CODE AVAILABILITY
 

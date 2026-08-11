@@ -8,6 +8,7 @@ from pathlib import Path
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
+from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
@@ -32,8 +33,42 @@ def set_run_font(run, size=11, bold=False, italic=False):
     run.italic = italic
 
 
+def add_hyperlink(paragraph, text: str, url: str, size: int = 11):
+    """Add a clickable hyperlink run to a paragraph."""
+    part = paragraph.part
+    r_id = part.relate_to(
+        url,
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
+        is_external=True,
+    )
+    hyperlink = OxmlElement("w:hyperlink")
+    hyperlink.set(qn("r:id"), r_id)
+    new_run = OxmlElement("w:r")
+    rPr = OxmlElement("w:rPr")
+    color = OxmlElement("w:color")
+    color.set(qn("w:val"), "0563C1")
+    rPr.append(color)
+    u = OxmlElement("w:u")
+    u.set(qn("w:val"), "single")
+    rPr.append(u)
+    sz = OxmlElement("w:sz")
+    sz.set(qn("w:val"), str(int(size * 2)))
+    rPr.append(sz)
+    rFonts = OxmlElement("w:rFonts")
+    rFonts.set(qn("w:ascii"), "Times New Roman")
+    rFonts.set(qn("w:hAnsi"), "Times New Roman")
+    rFonts.set(qn("w:eastAsia"), "Times New Roman")
+    rPr.append(rFonts)
+    new_run.append(rPr)
+    text_elem = OxmlElement("w:t")
+    text_elem.text = text
+    new_run.append(text_elem)
+    hyperlink.append(new_run)
+    paragraph._p.append(hyperlink)
+
+
 def clean_md_text(text: str) -> str:
-    """Remove markdown/latex leftovers for plain Word text."""
+    """Remove markdown/latex leftovers for plain Word text (no link expansion)."""
     text = text.replace("$^{1,*}$", "¹,*")
     text = text.replace("$^{1}$", "¹")
     text = text.replace("$^{1,}$", "¹")
@@ -41,15 +76,48 @@ def clean_md_text(text: str) -> str:
     text = text.replace("$", "")
     # strip inline code backticks but keep content
     text = re.sub(r"`([^`]+)`", r"\1", text)
-    # markdown links [text](url) -> text (url)
-    text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1 (\2)", text)
-    # remove emphasis markers later via split; here clean unmatched
     text = text.replace("****", "")
     return text
 
 
+def _is_url(s: str) -> bool:
+    return s.startswith("http://") or s.startswith("https://")
+
+
 def add_runs_with_markup(paragraph, text: str, size=11):
     text = clean_md_text(text)
+    # Split out markdown links and bare URLs so DOCX gets proper hyperlinks.
+    link_re = re.compile(
+        r"\[([^\]]+)\]\(([^)]+)\)|(https?://[^\s\]\)]+)"
+    )
+    pos = 0
+    for m in link_re.finditer(text):
+        if m.start() > pos:
+            _add_markup_fragment(paragraph, text[pos : m.start()], size)
+        if m.group(1) is not None:
+            label, url = m.group(1), m.group(2)
+            # Prefer canonical DOI URL as visible text when label is a bare DOI.
+            if label.startswith("10.") and "doi.org/" in url:
+                display = url
+            elif _is_url(label):
+                display = label
+            else:
+                display = label
+            add_hyperlink(paragraph, display, url, size=size)
+        else:
+            url = m.group(3).rstrip(".,;")
+            add_hyperlink(paragraph, url, url, size=size)
+            # re-append trailing punctuation stripped from URL if present
+            trail = m.group(3)[len(url) :]
+            if trail:
+                run = paragraph.add_run(trail)
+                set_run_font(run, size=size)
+        pos = m.end()
+    if pos < len(text):
+        _add_markup_fragment(paragraph, text[pos:], size)
+
+
+def _add_markup_fragment(paragraph, text: str, size: int = 11):
     # bold segments **...**
     parts = re.split(r"(\*\*[^*]+\*\*)", text)
     for part in parts:
@@ -59,7 +127,6 @@ def add_runs_with_markup(paragraph, text: str, size=11):
             run = paragraph.add_run(part[2:-2])
             set_run_font(run, size=size, bold=True)
         else:
-            # italic *...* (simple, non-greedy single)
             subparts = re.split(r"(\*[^*]+\*)", part)
             for sp in subparts:
                 if not sp:
