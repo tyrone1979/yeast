@@ -6,23 +6,23 @@ An Industrial Yeast Fed-Batch Fermentation Dataset for Nutrient Feed-Rate Predic
 
 **Authors:**
 
-[Author 1]$^{1}$, [Author 2]$^{1,*}$
+Changning Ren¹, Lei Zhao¹, Ling Kang¹, Quan Guo¹,*
 
 **Affiliations:**
 
-$^{1}$ [Institution, City, Country]
+¹ Dalian Neusoft University of Information, Dalian, China
 
 **Corresponding author’s email address:**
 
-[corresponding@author.edu]
+guoquan@neusoft.edu.cn
 
 **Keywords**
 
-Yeast fermentation; Fed-batch culture; Nutrient addition; Sugar feed rate; Industrial process data; Time-series dataset; Deep learning
+Yeast fermentation; Fed-batch culture; Nutrient addition; Sugar feed rate; Industrial process data; Time-series dataset; Expert process records
 
 **Abstract**
 
-This data article presents an industrial baker’s-yeast fed-batch fermentation dataset curated for nutrient-addition (primarily reducing-sugar feed-rate) prediction. The release comprises 61 production batches following a Differential Brew protocol, yielding 1,128 hourly records of process variables including alcohol concentration, biomass (Y30), sugar feed rate, and—for a 10-batch full-process subset—airflow, volume, pH, cell concentration, and growth modulus. Accompanying files provide protocol hourly setpoints, evaluation profiles for alcohol and growth modulus, and recipe/materials parameters. All files are UTF-8 CSV with documented headers. The dataset supports development and benchmarking of machine-learning and deep-learning models for fed-batch nutrient dosing, process monitoring, and transfer learning across fermentation batches. Data are intended for deposition in a public repository under an open license.
+This data article presents an industrial baker’s-yeast fed-batch fermentation dataset curated for nutrient-addition (primarily reducing-sugar feed-rate) prediction. The primary source materials are batch PDF logs completed by experienced plant operators and technicians during production, based on on-site process measurements and observations. These expert records were digitized into analysis-ready tables, yielding 61 production batches and 1,128 hourly records of process variables including alcohol concentration, biomass (Y30), sugar feed rate, and—for a 10-batch full-process subset—airflow, volume, pH, cell concentration, and growth modulus. All released files are UTF-8 CSV with documented headers. The dataset supports development and benchmarking of machine-learning and deep-learning models for fed-batch nutrient dosing, process monitoring, and transfer learning across fermentation batches. Data are intended for deposition in a public repository under an open license.
 
 # SPECIFICATIONS TABLE
 
@@ -30,49 +30,49 @@ This data article presents an industrial baker’s-yeast fed-batch fermentation 
 |------|---------|
 | Subject | Biological sciences / Bioprocess engineering |
 | Specific subject area | Industrial yeast fed-batch fermentation; nutrient feed-rate time series |
-| Type of data | Table: CSV process records, batch metadata, protocol setpoints, evaluation profiles |
-| Data collection | Hourly fermentation records were extracted from industrial batch sheets associated with a Differential Brew protocol (Nov. 2014). Variables include aeration, volume, pH, alcohol, cell/biomass measures, growth modulus, and reducing-sugar feed rate. Protocol setpoints and evaluation profiles were digitized from the same workbook. |
-| Data source location | Industrial yeast fermentation facility records compiled in the source workbook `data.xlsx` (institution to be specified by data owners before submission) |
+| Type of data | Table: CSV process records and batch metadata digitized from expert-completed industrial PDF batch logs |
+| Data collection | Hourly fermentation variables were measured and recorded by experienced operators/technicians on industrial batch PDF sheets during fed-batch yeast production. Recorded quantities include aeration, volume, pH, alcohol, cell/biomass measures, growth modulus, and reducing-sugar feed rate. The PDF logs were subsequently digitized into structured CSV tables for public release. No smoothing or imputation was applied. |
+| Data source location | Industrial yeast fermentation facility production records (institution to be specified by data owners before submission). Example original PDF batch logs are archived under `dataset/raw_pdfs/`. |
 | Data accessibility | Repository name: [figshare/Zenodo — to be completed] Data identification number: [DOI — to be completed] Direct URL to data: [https://doi.org/… — to be completed] |
-| Related research article | Related patent application: *A deep learning-based method for predicting nutrient addition in yeast fed-batch fermentation* (P250382). Related research article: none / [to be completed] |
+| Related research article | none / [to be completed] |
 
 # VALUE OF THE DATA
 
 This dataset is particularly valuable for researchers developing and benchmarking **fed-batch nutrient dosing predictors**, process soft-sensors, and deep temporal models for industrial fermentation. The following points summarize the specific contributions of this release.
 
-**Relevance to industrial bioprocess control:** Sugar feed rate is a critical operator-adjusted actuator in yeast manufacture. Public access to paired process states and recorded feed rates enables data-driven controllers and advisory systems that aim to reduce alcohol overflow, stabilize growth modulus, and improve biomass yield.
+**Expert-recorded industrial ground truth:** Values originate from PDF batch logs filled by experienced operators based on production measurements, rather than from laboratory simulations. This provides realistic paired process states and nutrient feed decisions for data-driven control research.
 
-**Scarcity of open industrial fermentation batches:** Public multi-batch industrial yeast fermentation datasets with explicit nutrient feed-rate labels remain uncommon. Most open bioprocess resources are laboratory-scale, simulated, or lack feed-actuator targets. This release provides 61 industrial batches under a documented Differential Brew protocol.
+**Relevance to industrial bioprocess control:** Sugar feed rate is a critical operator-adjusted actuator in yeast manufacture. Public access to paired process states and recorded feed rates enables advisory systems that aim to reduce alcohol overflow, stabilize growth modulus, and improve biomass yield.
+
+**Scarcity of open industrial fermentation batches:** Public multi-batch industrial yeast fermentation datasets with explicit nutrient feed-rate labels remain uncommon. Most open bioprocess resources are laboratory-scale, simulated, or lack feed-actuator targets. This release provides 61 digitized industrial batches.
 
 **Dual completeness tiers for flexible reuse:** Ten batches (`B01`–`B10`) include rich process covariates (airflow, volume, pH, cell concentration, growth modulus), while 51 additional batches supply alcohol–biomass–sugar trajectories for large-sample feed-rate modelling and transfer-learning studies.
 
-**Protocol and evaluation references included:** Hourly setpoints (temperature, air, pH, sugar/N/P feeds) and alcohol/growth-modulus evaluation profiles allow users to compare actual operation against planned trajectories and to construct supervised targets or constraint-aware losses.
-
-**Accessible CSV format:** Files use UTF-8 CSV with stable English headers, compatible with Python, MATLAB, and R without proprietary Excel parsing.
+**Accessible CSV format:** Files use UTF-8 CSV with stable English headers, compatible with Python, MATLAB, and R. A simple BiLSTM/CNN usage example is provided to demonstrate predictive reuse.
 
 # BACKGROUND
 
-Baker’s yeast production commonly employs aerobic fed-batch fermentation on molasses wort, in which sugar (reducing sugar, RS), nitrogen, and phosphorus feeds are adjusted over a ~16 h cycle to maximize biomass while limiting ethanol formation [1,2]. In plant practice, sugar addition is often guided by alcohol and growth-modulus trends and still requires frequent human intervention, creating variability across lots [3].
+Baker’s yeast production commonly employs aerobic fed-batch fermentation on molasses wort, in which sugar (reducing sugar, RS), nitrogen, and phosphorus feeds are adjusted over a multi-hour cycle to maximize biomass while limiting ethanol formation [1,2]. In plant practice, sugar addition is often guided by alcohol and growth-modulus trends and still requires frequent human intervention, creating variability across lots [3].
 
 Deep learning has been increasingly applied to fermentation soft sensing and predictive control, including convolutional and recurrent architectures for multiparameter time series [4,5]. Domain-adaptation and continual-learning strategies have also been proposed to transfer models across strains or operating regimes [6]. Progress is hindered by limited release of industrial batch data that jointly expose process states and nutrient feed actuators.
 
-The present dataset was curated from industrial Differential Brew records (protocol dated 18 November 2014) covering strain ID 167. It is designed to support nutrient feed-rate prediction methods consistent with dual temporal–spatial modelling pipelines that fuse sequential process features with protocol-informed spatial/process topology [7]. The release preserves recorded values after tabular restructuring and does not apply smoothing or imputation.
+The present dataset was curated from industrial production batch logs. Experienced operators and technicians measured key fermentation variables during fed-batch runs and recorded them on PDF batch sheets; these expert records were then digitized into machine-readable CSV files. The release preserves recorded values after tabular restructuring and does not apply smoothing or imputation. It is intended to support nutrient feed-rate prediction and related process-monitoring studies [7].
 
 # DATA DESCRIPTION
 
-The dataset package consists of five primary CSV files plus documentation and overview figures, summarized in Table 1.
+The dataset package consists of primary CSV files, documentation, and example original PDF batch logs. Table 1 summarizes the file inventory. Overview plots used in this article (Figs. 1–4) are manuscript materials and are not included in the public dataset deposit.
 
 **Table 1. File inventory for the dataset.**
 
 | File name | Format | Description |
 |-----------|--------|-------------|
-| `batch_metadata.csv` | CSV | One row per batch (n = 61): lot number, strain, recipe, seed information, yield, completeness flag |
+| `batch_metadata.csv` | CSV | One row per batch (n = 61): lot number, strain, seed information, yield, completeness flag |
 | `fermentation_timeseries.csv` | CSV | Stacked hourly records (n = 1,128) across all batches |
-| `protocol_hourly_setpoints.csv` | CSV | Planned hourly setpoints for temperature, air, pH, biomass trajectory, and sugar/N/P feeds |
-| `evaluation_profiles.csv` | CSV | Reference alcohol and growth-modulus profiles (0–17 h) |
-| `recipe_parameters.csv` | CSV | Protocol-level materials, fermenter geometry, and process assumptions |
+| `evaluation_profiles.csv` | CSV | Reference alcohol and growth-modulus profiles used for batch evaluation |
 | `README.md` | Markdown | Column definitions, completeness notes, recommended prediction task |
-| `figures/` | SVG | Overview plots corresponding to Figs. 1–4 |
+| `raw_pdfs/*.PDF` | PDF | Example original expert-completed industrial batch logs (12 files) |
+
+Table 2 provides the column definitions for the primary timeseries file `fermentation_timeseries.csv`, including units and representative example values.
 
 **Table 2. Column definitions for `fermentation_timeseries.csv`.**
 
@@ -95,6 +95,8 @@ The dataset package consists of five primary CSV files plus documentation and ov
 | `delta_growth_modulus` | Float | GM deviation helper field | 0.033 |
 | `auto_growth_modulus` | Float | Auto GM helper field | 1.363 |
 
+As shown in Table 3, the release contains two completeness tiers: ten full-process batches with rich covariates and 51 additional batches dominated by alcohol–biomass–sugar trajectories. All released batches share `strain_id = 167`. Lot numbers range from 2212 to 2682. Records per batch range from 17 to 21 hourly points.
+
 **Table 3. Batch completeness summary.**
 
 | Completeness class | Batches | n | Typical available variables |
@@ -102,41 +104,45 @@ The dataset package consists of five primary CSV files plus documentation and ov
 | `full_process` | B01–B10 | 10 | Airflow, volume, pH, alcohol, cell concentration, biomass, GM, sugar feed, TFS |
 | `alcohol_sugar_biomass` | B11–B61 | 51 | Alcohol, biomass, sugar feed (other covariates mostly missing) |
 
-All batches share `strain_id = 167` and `recipe = Diff`. Lot numbers range from 2212 to 2682. Records per batch range from 17 to 21 hourly points.
-
 # EXPERIMENTAL DESIGN, MATERIALS AND METHODS
 
-## Fermentation protocol and equipment context
+## Source records and expert data generation
 
-Batches follow the ZHENAO Trial Differential Brew Protocol (modified 18 November 2014). The protocol targets protein 57–58% and P₂O₅ 2.8–3.0%, with an assumed yield of 1.55 kg Y30 per kg RS. Wort is specified as beet molasses based (100% beet / 0% cane) at 0.35 kg RS/kg wort and density 1.24 kg/L. Nominal fermenter geometry in the protocol sheet is diameter 4 m, height 12 m, and nominal working volume ≈151.3 m³. Planned fermentation time is 16 h plus 40 min maturation. Major nutrient charges include 15,000 kg RS, 800 kg ammonia (100%), 420 kg H₃PO₄ (100%), and micronutrient / vitamin additions (MgSO₄, ZnSO₄, CuSO₄, B1/B5/B6, biotin) as listed in `recipe_parameters.csv`.
+The primary source materials are industrial fed-batch yeast fermentation **PDF batch logs**. During production, experienced operators and technicians performed process measurements (e.g., airflow, volume, pH, alcohol, cell/biomass-related quantities) and recorded the observed values, together with the sugar feed adjustments made during the run, onto standardized batch sheets archived as PDF files. Representative original PDFs are stored in `dataset/raw_pdfs/` (for example, `2291-D(2284).PDF`, `2317-D(2303).PDF`, `2324-D(2316).PDF`, and related lot sheets).
+
+These expert-completed PDF records constitute the authoritative origin of the numerical values in this release. Digitization into tabular form was performed subsequently to enable computational reuse; the released CSVs are intended to preserve the recorded measurements and feed decisions without algorithmic alteration.
 
 ## Measured variables and nutrient-addition target
 
-Industrial sheets record hourly values of aeration, volume, pH, alcohol, cell concentration, biomass (Y30), growth modulus (GM), reducing-sugar feed rate (RS kg/h), and total fermentable sugar. Protocol notes emphasize that sugar addition is the key human-adjusted input and is intended to be assisted by algorithmic recommendations—motivating the prediction use case. Nitrogen and phosphorus feeds are proportionally linked to sugar in the protocol setpoints.
+Each batch sheet records hourly values of aeration, volume, pH, alcohol, cell concentration, biomass (Y30), growth modulus (GM), reducing-sugar feed rate (RS kg/h), and total fermentable sugar when available (see Table 2 for field definitions). Sugar feed rate is the primary nutrient-addition actuator of interest for predictive modelling: it reflects operator decisions made in response to evolving fermentation states and is therefore a natural supervised-learning target. Fig. 1 shows the median sugar feed trajectory of the full-process batches (excluding anomalous-volume batch B05) with an interquartile-range (IQR) band. Fig. 2 presents side-by-side alcohol and biomass panels for representative batch B01: measured alcohol as points against the evaluation profile, and biomass as a growth curve.
 
-**Fig. 1.** Sugar feed trajectories for full-process batches compared with protocol setpoints (`figures/fig1_sugar_feed_trajectories.svg`).
+**Fig. 1.** Median sugar feed rate with IQR band across full-process batches (excluding B05).
 
-**Fig. 2.** Representative alcohol and biomass dynamics for batch B01 against the alcohol evaluation profile (`figures/fig2_alcohol_biomass_b01.svg`).
+**Fig. 2.** Alcohol (left; points = measured, line = evaluation profile) and biomass (right) for batch B01.
 
-## Data acquisition and curation workflow
+## Digitization and curation workflow
 
-1. Source workbook sheets `01`–`61` were parsed for batch headers (lot, strain, seed, yield) and hourly tables.
-2. Sheet `DIFF` was converted into structured recipe parameters and hourly setpoint rows.
-3. Sheet `评价标准` provided alcohol and GM evaluation profiles.
-4. English, machine-readable headers replaced mixed Chinese/English Excel labels.
+The pathway from expert PDF logs to the public CSV release is summarized in Table 4 and comprises the following stages:
+
+1. Expert operators/technicians measured process variables and recorded them on industrial PDF batch sheets.
+2. Batch records were digitized into structured tables corresponding to individual production lots.
+3. Digitized batch tables were assembled into stacked CSV releases with English, machine-readable headers (`batch_metadata.csv`, `fermentation_timeseries.csv`).
+4. Completeness flags were assigned (`full_process` vs `alcohol_sugar_biomass`; Table 3) according to available covariates.
 5. No imputation, smoothing, or unit renormalization was applied. Empty cells remain empty.
 6. Batch `B05` retains volume values that are approximately an order of magnitude larger than peer batches; this is flagged in `batch_metadata.csv` notes and treated as a raw recording anomaly.
 
-**Table 4. Data flow from source workbook to released CSVs.**
+**Table 4. Data flow from expert PDF logs to released CSVs.**
 
 | Stage | Component | Function | Output |
 |-------|-----------|----------|--------|
-| 1 | Industrial Excel sheets | Store batch headers and hourly logs | `data.xlsx` |
-| 2 | Conversion script | Normalize identifiers, stack timeseries, extract protocol tables | CSV files |
-| 3 | Metadata tagging | Completeness flags and anomaly notes | `batch_metadata.csv` |
-| 4 | Summary statistics | Compute descriptive stats for documentation | `summary_stats.json` |
+| 1 | Industrial PDF batch logs | Expert measurement and handwritten/typed recording during production | `dataset/raw_pdfs/*.PDF` |
+| 2 | Digitization | Transfer recorded values into structured batch tables | Tabular batch records |
+| 3 | Dataset packaging | Normalize identifiers, stack timeseries, document headers | CSV files |
+| 4 | Metadata tagging | Completeness flags and anomaly notes | `batch_metadata.csv` |
 
 ## Descriptive statistics
+
+Table 5 reports descriptive statistics (mean, standard deviation, minimum, and maximum) for the full-process batches (B01–B10). Table 6 summarizes the same statistics for the key variables available across all 61 batches. Complementary visual summaries are provided in Fig. 3 (median pH and airflow with IQR bands in separate panels) and Fig. 4 (distribution of recorded sugar feed rates).
 
 **Table 5. Descriptive statistics for full-process batches (B01–B10).**
 
@@ -159,28 +165,31 @@ Industrial sheets record hourly values of aeration, volume, pH, alcohol, cell co
 | Biomass Y30 (kg) | 1127 | 25562.1 | 13250.1 | 1417 | 71101 |
 | Sugar feed (kg RS/h) | 1066 | 1300.5 | 478.2 | 127 | 2194 |
 
-Note: Volume maxima are dominated by batch B05; users analysing volume should either exclude B05 or apply batch-wise robust scaling.
+Note: As indicated by the volume range in Table 5, volume maxima are dominated by batch B05; users analysing volume should either exclude B05 or apply batch-wise robust scaling.
 
-**Fig. 3.** Mean pH and airflow versus fermentation hour for full-process batches (`figures/fig3_mean_ph_airflow.svg`).
+**Fig. 3.** Median pH (left) and airflow (right) versus fermentation hour with IQR bands (full-process batches, excluding B05).
 
-**Fig. 4.** Histogram of recorded sugar feed rates across all batches (`figures/fig4_sugar_feed_hist.svg`).
+**Fig. 4.** Histogram of recorded sugar feed rates across all batches.
 
 ## Data quality validation
 
 Prior to release, the following checks were performed:
 
 - **Completeness check:** Counted non-missing values per variable and tagged batches as `full_process` or `alcohol_sugar_biomass`.
-- **Range screening:** Verified alcohol ≥ 0, pH roughly 3–8, growth modulus near 1–1.6, and sugar feed rates within protocol-compatible magnitudes.
+- **Range screening:** Verified alcohol ≥ 0, pH roughly 3–8, growth modulus near 1–1.6, and sugar feed rates within physically plausible magnitudes for industrial fed-batch operation.
 - **Batch integrity:** Confirmed `time_h` is unique within each `batch_id` and monotonically non-decreasing.
-- **Protocol alignment:** Confirmed setpoint hours 0–16 exist in `protocol_hourly_setpoints.csv`.
+- **Source traceability:** Confirmed that example original PDF batch logs are archived alongside the digitized tables.
+
+The outcomes of these checks are summarized in Table 7.
 
 **Table 7. Data quality validation outcomes.**
 
 | Check | Outcome |
 |-------|---------|
-| Batches parsed | 61/61 |
+| Batches in CSV release | 61 |
 | Timeseries rows | 1,128 |
 | Full-process batches | 10 |
+| Example original PDF logs | 12 files in `dataset/raw_pdfs/` |
 | Missing sugar feed rate | 62/1,128 (5.5%) |
 | Missing alcohol | 1/1,128 (0.1%) |
 | Flagged volume anomaly | B05 |
@@ -188,31 +197,23 @@ Prior to release, the following checks were performed:
 
 ## Example workflow for data loading
 
-```python
-import pandas as pd
-ts = pd.read_csv("fermentation_timeseries.csv")
-meta = pd.read_csv("batch_metadata.csv")
-full = meta.loc[meta["data_completeness"]=="full_process", "batch_id"]
-df = ts[ts["batch_id"].isin(full)].copy()
-# Example supervised target: next-hour sugar feed
-df = df.sort_values(["batch_id", "time_h"])
-df["sugar_feed_next"] = df.groupby("batch_id")["sugar_feed_rate_kg_rs_h"].shift(-1)
-```
+The CSV files can be opened in any standard spreadsheet or scientific computing environment. Users typically load `fermentation_timeseries.csv` together with `batch_metadata.csv`, select batches marked as `full_process` when rich covariates are required, sort records by `batch_id` and `time_h`, and construct supervised targets such as the current-hour or next-hour sugar feed rate (`sugar_feed_rate_kg_rs_h`) from the ordered time series within each batch. Empty cells should be treated as missing values rather than zeros. Column definitions are provided in Table 2 and in the dataset `README.md`.
 
 # Example Data Reuse and Quality Assessment
 
-**Feed-rate prediction baseline.** Using full-process batches, a simple lag model that predicts current sugar feed rate from the previous hour’s alcohol, biomass, pH, and airflow can be trained with ordinary least squares or gradient boosting. Users should evaluate with leave-one-batch-out validation to reflect industrial lot shift.
+**Feed-rate prediction baseline.** Using full-process batches, a BiLSTM (or 1D-CNN) model can predict current sugar feed rate from a short window of recent process variables. In a leave-one-batch-out evaluation on nine full-process batches (excluding the anomalous-volume batch B05), the accompanying usage example achieved pooled MAE ≈ 102.5 kg RS/h, MAPE ≈ 11.6%, and R² ≈ 0.872, demonstrating that the digitized expert records are usable for supervised nutrient-addition prediction. Details of the executable example are given under Code availability.
 
 **Profile tracking.** Differences between measured alcohol and `evaluation_profiles.csv` provide a batch-quality indicator; batches with persistently elevated alcohol relative to the profile are candidates for feed-rate oversupply studies.
 
-**Protocol residual analysis.** Subtracting `protocol_hourly_setpoints.csv` sugar feed from measured `sugar_feed_rate_kg_rs_h` yields operator adjustment residuals—useful labels for imitation learning or human-in-the-loop control research.
+**Cross-batch generalization.** Because records come from multiple production lots, leave-one-batch-out or leave-several-lots-out validation is recommended to assess robustness under industrial lot shift.
 
 # LIMITATIONS
 
-- **Single strain and recipe:** All batches are strain 167 under the Diff protocol; cross-strain generalization cannot be assessed from this release alone.
+- **Single strain context:** Released batches share strain ID 167; cross-strain generalization cannot be assessed from this release alone.
 - **Uneven covariate coverage:** Only 10 batches include rich process covariates; 51 batches are sparse.
-- **Hourly resolution:** Records are hourly rather than high-frequency (≥1 Hz) IoT streams described in related method patents.
-- **Temperature field not released:** Protocol temperature setpoints exist, but distributed temperature-field measurements are not present in the batch sheets.
+- **Hourly resolution:** Records are hourly operator/log-sheet resolution rather than high-frequency continuous sensor streams.
+- **Digitization from PDF logs:** Values were transferred from expert-completed PDF sheets; handwriting/transcription artefacts may exist and are retained when present.
+- **Incomplete PDF archive in the package:** The repository includes example original PDFs; not every digitized batch PDF is necessarily redistributed with the public package.
 - **Possible recording anomaly:** Volume values in B05 appear inflated relative to peers and should be handled cautiously.
 - **Confidential plant metadata:** Exact plant identity, calendar dates, and operator identities are not included.
 - **Repository DOI pending:** Public DOI/URL placeholders must be completed upon deposition.
@@ -223,7 +224,7 @@ The authors have read and follow the ethical requirements for publication in *Da
 
 # CRediT AUTHOR STATEMENT
 
-[Author 1]: Conceptualization, Data curation, Investigation, Methodology, Writing – original draft. [Author 2]: Supervision, Writing – review & editing.
+Changning Ren: Conceptualization, Data curation, Investigation, Methodology, Writing – original draft. Lei Zhao: Investigation, Writing – review & editing. Ling Kang: Data curation, Validation. Quan Guo: Supervision, Writing – review & editing.
 
 # ACKNOWLEDGEMENTS
 
@@ -231,7 +232,11 @@ The authors have read and follow the ethical requirements for publication in *Da
 
 # DATA AVAILABILITY
 
-The datasets will be deposited on [figshare/Zenodo] (DOI: [to be completed]). Repository contents include: (i) CSV files listed in Table 1; (ii) `README.md` with column definitions; (iii) conversion and figure scripts under `scripts/`; and (iv) overview figures. Source conversion script: `scripts/convert_excel_to_dataset.py`.
+The datasets will be deposited on [figshare/Zenodo] (DOI: [to be completed]). Repository contents include the files listed in Table 1: CSV tables, `README.md`, and example original PDF batch logs under `raw_pdfs/`. Manuscript figures (Figs. 1–4) are not part of the dataset deposit.
+
+# CODE AVAILABILITY
+
+Supporting code for this data article is available in the project repository at https://gitee.com/sacourse/yeast.git. The repository provides: (i) scripts for packaging the digitized batch tables into the released CSV layout; (ii) scripts for regenerating the manuscript figures under `paper/figures/`; and (iii) a usage example that trains lightweight sequence models (BiLSTM or 1D-CNN) to predict sugar feed rate under leave-one-batch-out validation, together with example metrics. Installation dependencies are listed in `requirements.txt`. The code is intended to demonstrate dataset usability and to support reproduction of the figures and baseline prediction results reported in this article.
 
 # DECLARATION OF COMPETING INTERESTS
 
@@ -251,4 +256,4 @@ The authors declare that they have no known competing financial interests or per
 
 [6] S.J. Pan, Q. Yang, A survey on transfer learning, IEEE Trans. Knowl. Data Eng. 22 (2010) 1345–1359. https://doi.org/10.1109/TKDE.2009.35.
 
-[7] Patent application P250382, A deep learning-based method for predicting nutrient addition in yeast fed-batch fermentation.
+[7] Z. Ge, Z. Song, S. X. Ding, B. Huang, Data mining and analytics in the process industry: the role of machine learning, IEEE Access 5 (2017) 20590–20616. https://doi.org/10.1109/ACCESS.2017.2756872.

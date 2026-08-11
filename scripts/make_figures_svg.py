@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "dataset"
-FIG = DATA / "figures"
+FIG = ROOT / "paper" / "figures"
 
 
 def load_csv(path):
@@ -92,7 +92,6 @@ def main():
     meta = load_csv(DATA / "batch_metadata.csv")
     ts = load_csv(DATA / "fermentation_timeseries.csv")
     prof = load_csv(DATA / "evaluation_profiles.csv")
-    sp = load_csv(DATA / "protocol_hourly_setpoints.csv")
     full_ids = [m["batch_id"] for m in meta if m["data_completeness"] == "full_process"]
     colors = [
         "#1f77b4",
@@ -124,14 +123,6 @@ def main():
                 all_x.append(x)
                 all_y.append(y)
         series.append((bid, pts, colors[i % len(colors)]))
-    px, py = [], []
-    for r in sp:
-        x, y = fnum(r["brew_hour"]), fnum(r["sugar_feed_rate_kg_rs_h"])
-        if x is not None and y is not None:
-            px.append(x)
-            py.append(y)
-            all_x.append(x)
-            all_y.append(y)
     xmin, xmax = min(all_x), max(all_x)
     ymin, ymax = 0, max(all_y) * 1.05
     lines += axis(
@@ -145,7 +136,7 @@ def main():
         ymax,
         "Fermentation time (h)",
         "Sugar feed rate (kg RS / h)",
-        "Measured sugar feed trajectories vs protocol setpoint",
+        "Measured sugar feed trajectories (full-process batches)",
     )
     for bid, pts, col in series:
         mapped = [
@@ -153,11 +144,6 @@ def main():
             for x, y in pts
         ]
         lines.append(polyline(mapped, col, 1.4))
-    mapped = [
-        (mapx(x, xmin, xmax, left, right), mapy(y, ymin, ymax, top, bottom))
-        for x, y in zip(px, py)
-    ]
-    lines.append(polyline(mapped, "#000000", 2.2, dash="6 4"))
     # legend
     lx, ly = 80, 460
     for i, (bid, _, col) in enumerate(series):
@@ -167,12 +153,6 @@ def main():
         lines.append(
             f'<text x="{x0+28}" y="{y0+4}" font-family="Arial" font-size="11">{bid}</text>'
         )
-    lines.append(
-        f'<line x1="{lx}" y1="{ly+40}" x2="{lx+22}" y2="{ly+40}" stroke="#000" stroke-width="2" stroke-dasharray="6 4"/>'
-    )
-    lines.append(
-        f'<text x="{lx+28}" y="{ly+44}" font-family="Arial" font-size="11">Protocol setpoint</text>'
-    )
     save(FIG / "fig1_sugar_feed_trajectories.svg", lines)
 
     # Fig2 alcohol/biomass B01

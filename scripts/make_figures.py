@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "dataset"
-FIG = DATA / "figures"
+FIG = ROOT / "paper" / "figures"
 
 
 def load_csv(path):
@@ -33,7 +33,6 @@ def main():
     meta = load_csv(DATA / "batch_metadata.csv")
     ts = load_csv(DATA / "fermentation_timeseries.csv")
     prof = load_csv(DATA / "evaluation_profiles.csv")
-    sp = load_csv(DATA / "protocol_hourly_setpoints.csv")
 
     full_ids = [m["batch_id"] for m in meta if m["data_completeness"] == "full_process"]
 
@@ -49,18 +48,9 @@ def main():
                 y.append(yv)
         if x:
             plt.plot(x, y, marker="o", markersize=3, linewidth=1.2, label=bid)
-    # protocol setpoint overlay
-    px, py = [], []
-    for r in sp:
-        xv, yv = fnum(r["brew_hour"]), fnum(r["sugar_feed_rate_kg_rs_h"])
-        if xv is not None and yv is not None:
-            px.append(xv)
-            py.append(yv)
-    if px:
-        plt.plot(px, py, "k--", linewidth=2.0, label="Protocol setpoint")
     plt.xlabel("Fermentation time (h)")
     plt.ylabel("Sugar feed rate (kg RS / h)")
-    plt.title("Measured sugar feed trajectories vs protocol setpoint")
+    plt.title("Measured sugar feed trajectories (full-process batches)")
     plt.legend(ncol=3, fontsize=8, frameon=False)
     plt.tight_layout()
     plt.savefig(FIG / "fig1_sugar_feed_trajectories.png", dpi=300)

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Convert industrial yeast fermentation Excel workbook into publication-ready CSVs."""
+"""Assemble digitized industrial yeast fermentation batch tables into publication-ready CSVs.
+
+Primary scientific provenance is expert-completed PDF batch logs under dataset/raw_pdfs/.
+This script only packages already-digitized tabular extracts into the public CSV layout.
+"""
 
 from __future__ import annotations
 
@@ -66,7 +70,6 @@ def write_csv(path: Path, fields, rows):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "figures").mkdir(parents=True, exist_ok=True)
 
     wb = load_workbook(SRC, data_only=True)
 
@@ -206,217 +209,6 @@ def main():
         OUT / "evaluation_profiles.csv",
         ["time_h", "alcohol_profile_vv_pct", "growth_modulus_profile"],
         prof,
-    )
-
-    # Protocol hourly setpoints
-    ws = wb["DIFF"]
-    sp_fields = [
-        "brew_hour",
-        "hour_interval",
-        "temp_c",
-        "airflow_m3_h",
-        "ph_setpoint",
-        "volume_m3",
-        "fill_pct",
-        "alcohol_target_vv_pct",
-        "cell_apparent_gpl",
-        "cell_actual_y30_gpl",
-        "biomass_y30_kg",
-        "growth_modulus",
-        "sugar_feed_rate_kg_rs_h",
-        "total_rs_kg",
-        "wort_kg",
-        "ammonia_rate_kg_h",
-        "total_ammonia_kg",
-        "phosphoric_rate_kg_h",
-        "total_h3po4_kg",
-        "note",
-    ]
-    setpoints = []
-    for r in range(33, 50):
-        hour_label = ws.cell(r, 2).value
-        if hour_label is None:
-            continue
-        if isinstance(hour_label, (int, float)):
-            brew_hour = int(hour_label)
-        else:
-            s = str(hour_label).strip().lower()
-            if "cool" in s:
-                break
-            if "start" in s:
-                brew_hour = 0
-            else:
-                try:
-                    brew_hour = int(float(s))
-                except ValueError:
-                    continue
-        setpoints.append(
-            {
-                "brew_hour": brew_hour,
-                "hour_interval": ws.cell(r, 3).value
-                if ws.cell(r, 3).value is not None
-                else "",
-                "temp_c": round_or_none(ws.cell(r, 4).value, 3),
-                "airflow_m3_h": round_or_none(ws.cell(r, 5).value, 3),
-                "ph_setpoint": round_or_none(ws.cell(r, 6).value, 3),
-                "volume_m3": round_or_none(ws.cell(r, 8).value, 4),
-                "fill_pct": round_or_none(ws.cell(r, 9).value, 4),
-                "alcohol_target_vv_pct": round_or_none(ws.cell(r, 10).value, 6),
-                "cell_apparent_gpl": round_or_none(ws.cell(r, 11).value, 4),
-                "cell_actual_y30_gpl": round_or_none(ws.cell(r, 12).value, 4),
-                "biomass_y30_kg": round_or_none(ws.cell(r, 13).value, 4),
-                "growth_modulus": round_or_none(ws.cell(r, 14).value, 6),
-                "sugar_feed_rate_kg_rs_h": round_or_none(ws.cell(r, 15).value, 4),
-                "total_rs_kg": round_or_none(ws.cell(r, 16).value, 4),
-                "wort_kg": round_or_none(ws.cell(r, 17).value, 4),
-                "ammonia_rate_kg_h": round_or_none(ws.cell(r, 18).value, 4),
-                "total_ammonia_kg": round_or_none(ws.cell(r, 19).value, 4),
-                "phosphoric_rate_kg_h": round_or_none(ws.cell(r, 20).value, 4),
-                "total_h3po4_kg": round_or_none(ws.cell(r, 21).value, 4),
-                "note": ws.cell(r, 22).value if ws.cell(r, 22).value is not None else "",
-            }
-        )
-    write_csv(OUT / "protocol_hourly_setpoints.csv", sp_fields, setpoints)
-
-    materials = [
-        {
-            "item": "protocol_name",
-            "value": "ZHENAO TRIAL DIFFERENTIAL BREW PROTOCOL-NOV.2014",
-            "unit": "",
-            "category": "protocol",
-        },
-        {
-            "item": "protocol_date",
-            "value": "2014-11-18",
-            "unit": "",
-            "category": "protocol",
-        },
-        {
-            "item": "target_protein",
-            "value": "57-58",
-            "unit": "%",
-            "category": "product_target",
-        },
-        {
-            "item": "target_p2o5",
-            "value": "2.8-3.0",
-            "unit": "%",
-            "category": "product_target",
-        },
-        {
-            "item": "assumed_yield_y30_per_rs",
-            "value": "1.55",
-            "unit": "kg Y30 / kg RS",
-            "category": "assumption",
-        },
-        {
-            "item": "assumed_naf",
-            "value": "1.0-1.05",
-            "unit": "",
-            "category": "assumption",
-        },
-        {
-            "item": "assumed_paf",
-            "value": "0.85-0.95",
-            "unit": "",
-            "category": "assumption",
-        },
-        {
-            "item": "wort_source",
-            "value": "Beet 100% / Cane 0%",
-            "unit": "",
-            "category": "recipe",
-        },
-        {
-            "item": "average_wort_concentration",
-            "value": "0.35",
-            "unit": "kg RS / kg wort",
-            "category": "recipe",
-        },
-        {
-            "item": "wort_density",
-            "value": "1.24",
-            "unit": "kg/L",
-            "category": "recipe",
-        },
-        {"item": "total_rs", "value": "15000", "unit": "kg", "category": "materials"},
-        {
-            "item": "total_wort",
-            "value": "42857.14",
-            "unit": "kg",
-            "category": "materials",
-        },
-        {
-            "item": "ammonia_100pct",
-            "value": "800",
-            "unit": "kg",
-            "category": "materials",
-        },
-        {
-            "item": "h3po4_100pct",
-            "value": "420",
-            "unit": "kg",
-            "category": "materials",
-        },
-        {"item": "mgso4", "value": "100", "unit": "kg", "category": "materials"},
-        {"item": "znso4", "value": "5", "unit": "kg", "category": "materials"},
-        {"item": "cuso4", "value": "180", "unit": "g", "category": "materials"},
-        {"item": "thiamine_b1", "value": "1500", "unit": "g", "category": "materials"},
-        {
-            "item": "ca_pantothenate_b5",
-            "value": "2500",
-            "unit": "g",
-            "category": "materials",
-        },
-        {"item": "pyridoxine_b6", "value": "800", "unit": "g", "category": "materials"},
-        {"item": "biotin", "value": "25", "unit": "g", "category": "materials"},
-        {
-            "item": "fermenter_diameter",
-            "value": "4",
-            "unit": "m",
-            "category": "equipment",
-        },
-        {
-            "item": "fermenter_height",
-            "value": "12",
-            "unit": "m",
-            "category": "equipment",
-        },
-        {
-            "item": "nominal_fermenter_volume",
-            "value": "151.30",
-            "unit": "m3",
-            "category": "equipment",
-        },
-        {
-            "item": "fermentation_time",
-            "value": "16",
-            "unit": "h",
-            "category": "process",
-        },
-        {
-            "item": "maturation_time",
-            "value": "40",
-            "unit": "min",
-            "category": "process",
-        },
-        {
-            "item": "seed_transfer_time",
-            "value": "20",
-            "unit": "min",
-            "category": "process",
-        },
-        {
-            "item": "projected_cream_output",
-            "value": "27250",
-            "unit": "kg Y30",
-            "category": "process",
-        },
-    ]
-    write_csv(
-        OUT / "recipe_parameters.csv",
-        ["item", "value", "unit", "category"],
-        materials,
     )
 
     full_ids = {m["batch_id"] for m in meta_rows if m["data_completeness"] == "full_process"}

@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
 <rect width="100%" height="100%" fill="white"/>
 <rect x="70" y="50" width="790" height="380" fill="none" stroke="#333"/>
-<text x="465.0" y="24" text-anchor="middle" font-family="Arial" font-size="15" fill="#111">Measured sugar feed trajectories vs protocol setpoint</text>
+<text x="465.0" y="24" text-anchor="middle" font-family="Arial" font-size="15" fill="#111">Measured sugar feed trajectories (full-process batches)</text>
 <text x="465.0" y="466" text-anchor="middle" font-family="Arial" font-size="12" fill="#222">Fermentation time (h)</text>
 <text x="22" y="240.0" text-anchor="middle" font-family="Arial" font-size="12" fill="#222" transform="rotate(-90 22 240.0)">Sugar feed rate (kg RS / h)</text>
 <line x1="70.0" y1="430" x2="70.0" y2="434" stroke="#333"/>
@@ -34,7 +34,6 @@
 <path d="M 70.00,352.64 L 119.38,344.06 L 168.75,308.93 L 218.12,273.96 L 267.50,227.60 L 316.88,245.09 L 366.25,214.57 L 415.62,186.20 L 465.00,151.07 L 514.38,140.51 L 563.75,144.63 L 613.12,106.36 L 662.50,130.61 L 711.88,119.89 L 761.25,91.19 L 810.62,178.12 L 860.00,350.33" fill="none" stroke="#7f7f7f" stroke-width="1.4"/>
 <path d="M 70.00,343.24 L 119.38,344.06 L 168.75,333.01 L 218.12,286.82 L 267.50,231.89 L 316.88,186.70 L 366.25,192.96 L 415.62,198.08 L 465.00,172.51 L 514.38,137.70 L 563.75,103.23 L 613.12,104.55 L 662.50,130.78 L 711.88,131.93 L 761.25,127.48 L 810.62,201.21 L 860.00,354.45" fill="none" stroke="#bcbd22" stroke-width="1.4"/>
 <path d="M 70.00,337.13 L 119.38,335.32 L 168.75,321.63 L 218.12,285.34 L 267.50,243.27 L 316.88,224.96 L 366.25,221.01 L 415.62,193.62 L 465.00,171.19 L 514.38,149.25 L 563.75,118.41 L 613.12,98.45 L 662.50,107.68 L 711.88,132.92 L 761.25,114.78 L 810.62,179.60 L 860.00,331.03" fill="none" stroke="#17becf" stroke-width="1.4"/>
-<path d="M 70.00,397.01 L 119.38,367.32 L 168.75,347.52 L 218.12,330.33 L 267.50,308.46 L 316.88,286.82 L 366.25,268.47 L 415.62,243.67 L 465.00,228.24 L 514.38,215.56 L 563.75,209.16 L 613.12,207.31 L 662.50,207.31 L 711.88,223.81 L 761.25,240.31 L 810.62,365.67" fill="none" stroke="#000000" stroke-width="2.2" stroke-dasharray="6 4"/>
 <line x1="80" y1="460" x2="102" y2="460" stroke="#1f77b4" stroke-width="2"/>
 <text x="108" y="464" font-family="Arial" font-size="11">B01</text>
 <line x1="230" y1="460" x2="252" y2="460" stroke="#ff7f0e" stroke-width="2"/>
@@ -55,6 +54,4 @@
 <text x="558" y="482" font-family="Arial" font-size="11">B09</text>
 <line x1="680" y1="478" x2="702" y2="478" stroke="#17becf" stroke-width="2"/>
 <text x="708" y="482" font-family="Arial" font-size="11">B10</text>
-<line x1="80" y1="500" x2="102" y2="500" stroke="#000" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="108" y="504" font-family="Arial" font-size="11">Protocol setpoint</text>
 </svg>
