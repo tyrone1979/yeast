@@ -1,0 +1,158 @@
+{
+  "n_batches": 61,
+  "n_full_process_batches": 10,
+  "n_sparse_batches": 51,
+  "n_timeseries_rows": 1128,
+  "strain_ids": [
+    "167"
+  ],
+  "recipes": [
+    "Diff"
+  ],
+  "lot_no_min": 2212,
+  "lot_no_max": 2682,
+  "records_per_batch": [
+    17,
+    18,
+    19,
+    20,
+    21
+  ],
+  "descriptive_all": {
+    "airflow_m3_h": {
+      "n": 179,
+      "mean": 16459.2402,
+      "std": 5748.2675,
+      "min": 4961.0,
+      "max": 49992.0
+    },
+    "volume_m3": {
+      "n": 179,
+      "mean": 219.9402,
+      "std": 319.5042,
+      "min": 87.7,
+      "max": 1470.0
+    },
+    "ph": {
+      "n": 179,
+      "mean": 5.7738,
+      "std": 1.0691,
+      "min": 3.91,
+      "max": 7.75
+    },
+    "alcohol_vv_pct": {
+      "n": 1127,
+      "mean": 0.1035,
+      "std": 0.0612,
+      "min": 0.001,
+      "max": 0.393
+    },
+    "cell_concentration_gpl": {
+      "n": 179,
+      "mean": 206.3128,
+      "std": 80.1029,
+      "min": 57.0,
+      "max": 300.0
+    },
+    "biomass_y30_kg": {
+      "n": 1127,
+      "mean": 25562.1091,
+      "std": 13250.066,
+      "min": 1417.0,
+      "max": 71101.0
+    },
+    "growth_modulus": {
+      "n": 169,
+      "mean": 1.1349,
+      "std": 0.0967,
+      "min": 1.0,
+      "max": 1.56
+    },
+    "sugar_feed_rate_kg_rs_h": {
+      "n": 1066,
+      "mean": 1300.5263,
+      "std": 478.1751,
+      "min": 127.0,
+      "max": 2194.0
+    },
+    "total_fermentable_sugar_kg": {
+      "n": 247,
+      "mean": 8297.1296,
+      "std": 7948.7141,
+      "min": 200.0,
+      "max": 23058.0
+    }
+  },
+  "descriptive_full_process": {
+    "airflow_m3_h": {
+      "n": 179,
+      "mean": 16459.2402,
+      "std": 5748.2675,
+      "min": 4961.0,
+      "max": 49992.0
+    },
+    "volume_m3": {
+      "n": 179,
+      "mean": 219.9402,
+      "std": 319.5042,
+      "min": 87.7,
+      "max": 1470.0
+    },
+    "ph": {
+      "n": 179,
+      "mean": 5.7738,
+      "std": 1.0691,
+      "min": 3.91,
+      "max": 7.75
+    },
+    "alcohol_vv_pct": {
+      "n": 179,
+      "mean": 0.1026,
+      "std": 0.0705,
+      "min": 0.002,
+      "max": 0.393
+    },
+    "cell_concentration_gpl": {
+      "n": 179,
+      "mean": 206.3128,
+      "std": 80.1029,
+      "min": 57.0,
+      "max": 300.0
+    },
+    "biomass_y30_kg": {
+      "n": 179,
+      "mean": 25346.3961,
+      "std": 13016.4003,
+      "min": 5056.0,
+      "max": 44253.0
+    },
+    "growth_modulus": {
+      "n": 169,
+      "mean": 1.1349,
+      "std": 0.0967,
+      "min": 1.0,
+      "max": 1.56
+    },
+    "sugar_feed_rate_kg_rs_h": {
+      "n": 169,
+      "mean": 1342.7041,
+      "std": 518.7706,
+      "min": 127.0,
+      "max": 2194.0
+    },
+    "total_fermentable_sugar_kg": {
+      "n": 179,
+      "mean": 10342.6872,
+      "std": 7673.4945,
+      "min": 300.0,
+      "max": 23058.0
+    }
+  },
+  "yield_stats": {
+    "n": 11,
+    "mean": 39016.5503,
+    "std": 336.4637,
+    "min": 38383.8634,
+    "max": 39455.7233
+  }
+}

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="70" y="50" width="710" height="380" fill="none" stroke="#333"/>
+<text x="425.0" y="24" text-anchor="middle" font-family="Arial" font-size="15" fill="#111">Representative batch alcohol–biomass dynamics (B01)</text>
+<text x="425.0" y="466" text-anchor="middle" font-family="Arial" font-size="12" fill="#222">Fermentation time (h)</text>
+<text x="22" y="240.0" text-anchor="middle" font-family="Arial" font-size="12" fill="#222" transform="rotate(-90 22 240.0)">Alcohol (v/v %)</text>
+<line x1="70.0" y1="430" x2="70.0" y2="434" stroke="#333"/>
+<text x="70.0" y="448" text-anchor="middle" font-family="Arial" font-size="10">0</text>
+<line x1="66" y1="430.0" x2="70" y2="430.0" stroke="#333"/>
+<text x="62" y="433.0" text-anchor="end" font-family="Arial" font-size="10">0</text>
+<line x1="247.5" y1="430" x2="247.5" y2="434" stroke="#333"/>
+<text x="247.5" y="448" text-anchor="middle" font-family="Arial" font-size="10">4</text>
+<line x1="66" y1="335.0" x2="70" y2="335.0" stroke="#333"/>
+<text x="62" y="338.0" text-anchor="end" font-family="Arial" font-size="10">0.072</text>
+<line x1="425.0" y1="430" x2="425.0" y2="434" stroke="#333"/>
+<text x="425.0" y="448" text-anchor="middle" font-family="Arial" font-size="10">8</text>
+<line x1="66" y1="240.0" x2="70" y2="240.0" stroke="#333"/>
+<text x="62" y="243.0" text-anchor="end" font-family="Arial" font-size="10">0.14</text>
+<line x1="602.5" y1="430" x2="602.5" y2="434" stroke="#333"/>
+<text x="602.5" y="448" text-anchor="middle" font-family="Arial" font-size="10">13</text>
+<line x1="66" y1="145.0" x2="70" y2="145.0" stroke="#333"/>
+<text x="62" y="148.0" text-anchor="end" font-family="Arial" font-size="10">0.22</text>
+<line x1="780.0" y1="430" x2="780.0" y2="434" stroke="#333"/>
+<text x="780.0" y="448" text-anchor="middle" font-family="Arial" font-size="10">17</text>
+<line x1="66" y1="50.0" x2="70" y2="50.0" stroke="#333"/>
+<text x="62" y="53.0" text-anchor="end" font-family="Arial" font-size="10">0.29</text>
+<path d="M 70.00,173.58 L 111.76,131.29 L 153.53,161.69 L 195.29,193.41 L 237.06,258.17 L 278.82,211.91 L 320.59,206.63 L 362.35,246.28 L 404.12,283.29 L 445.88,308.40 L 487.65,291.22 L 529.41,272.71 L 571.18,322.94 L 612.94,296.50 L 654.71,354.66 L 696.47,427.36 L 738.24,412.82 L 780.00,424.71" fill="none" stroke="#1f4e79" stroke-width="2"/>
+<path d="M 70.00,165.65 L 111.76,99.57 L 153.53,126.00 L 195.29,165.65 L 237.06,192.09 L 278.82,218.52 L 320.59,244.96 L 362.35,258.17 L 404.12,271.39 L 445.88,284.61 L 487.65,297.83 L 529.41,311.04 L 571.18,324.26 L 612.94,337.48 L 654.71,363.91 L 696.47,390.35 L 738.24,416.78 L 780.00,423.39" fill="none" stroke="#c55a11" stroke-width="2" stroke-dasharray="5 3"/>
+<line x1="780" y1="430.0" x2="784" y2="430.0" stroke="#548235"/>
+<text x="788" y="433.0" font-family="Arial" font-size="10" fill="#548235">0</text>
+<line x1="780" y1="335.0" x2="784" y2="335.0" stroke="#548235"/>
+<text x="788" y="338.0" font-family="Arial" font-size="10" fill="#548235">11616</text>
+<line x1="780" y1="240.0" x2="784" y2="240.0" stroke="#548235"/>
+<text x="788" y="243.0" font-family="Arial" font-size="10" fill="#548235">23233</text>
+<line x1="780" y1="145.0" x2="784" y2="145.0" stroke="#548235"/>
+<text x="788" y="148.0" font-family="Arial" font-size="10" fill="#548235">34849</text>
+<line x1="780" y1="50.0" x2="784" y2="50.0" stroke="#548235"/>
+<text x="788" y="53.0" font-family="Arial" font-size="10" fill="#548235">46466</text>
+<text x="835" y="240.0" text-anchor="middle" font-family="Arial" font-size="12" fill="#548235" transform="rotate(90 835 240.0)">Biomass Y30 (kg)</text>
+<path d="M 70.00,386.82 L 111.76,383.10 L 153.53,371.89 L 195.29,356.28 L 237.06,329.51 L 278.82,303.87 L 320.59,281.34 L 362.35,255.88 L 404.12,232.90 L 445.88,210.67 L 487.65,190.73 L 529.41,166.68 L 571.18,144.27 L 612.94,111.01 L 654.71,91.90 L 696.47,81.21 L 738.24,72.22 L 780.00,68.10" fill="none" stroke="#548235" stroke-width="2"/>
+<line x1="80" y1="460" x2="105" y2="460" stroke="#1f4e79" stroke-width="2"/>
+<text x="110" y="464" font-family="Arial" font-size="11">Alcohol (B01)</text>
+<line x1="250" y1="460" x2="275" y2="460" stroke="#c55a11" stroke-width="2" stroke-dasharray="5 3"/>
+<text x="280" y="464" font-family="Arial" font-size="11">Alcohol evaluation profile</text>
+<line x1="520" y1="460" x2="545" y2="460" stroke="#548235" stroke-width="2"/>
+<text x="550" y="464" font-family="Arial" font-size="11">Biomass Y30 (B01)</text>
+</svg>

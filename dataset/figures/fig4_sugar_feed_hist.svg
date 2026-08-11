@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="480" viewBox="0 0 820 480">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="70" y="50" width="710" height="350" fill="none" stroke="#333"/>
+<text x="425.0" y="24" text-anchor="middle" font-family="Arial" font-size="15" fill="#111">Distribution of recorded sugar feed rates (all batches)</text>
+<text x="425.0" y="436" text-anchor="middle" font-family="Arial" font-size="12" fill="#222">Sugar feed rate (kg RS / h)</text>
+<text x="22" y="225.0" text-anchor="middle" font-family="Arial" font-size="12" fill="#222" transform="rotate(-90 22 225.0)">Count</text>
+<line x1="70.0" y1="400" x2="70.0" y2="404" stroke="#333"/>
+<text x="70.0" y="418" text-anchor="middle" font-family="Arial" font-size="10">127</text>
+<line x1="66" y1="400.0" x2="70" y2="400.0" stroke="#333"/>
+<text x="62" y="403.0" text-anchor="end" font-family="Arial" font-size="10">0</text>
+<line x1="247.5" y1="400" x2="247.5" y2="404" stroke="#333"/>
+<text x="247.5" y="418" text-anchor="middle" font-family="Arial" font-size="10">644</text>
+<line x1="66" y1="312.5" x2="70" y2="312.5" stroke="#333"/>
+<text x="62" y="315.5" text-anchor="end" font-family="Arial" font-size="10">29</text>
+<line x1="425.0" y1="400" x2="425.0" y2="404" stroke="#333"/>
+<text x="425.0" y="418" text-anchor="middle" font-family="Arial" font-size="10">1160</text>
+<line x1="66" y1="225.0" x2="70" y2="225.0" stroke="#333"/>
+<text x="62" y="228.0" text-anchor="end" font-family="Arial" font-size="10">58</text>
+<line x1="602.5" y1="400" x2="602.5" y2="404" stroke="#333"/>
+<text x="602.5" y="418" text-anchor="middle" font-family="Arial" font-size="10">1677</text>
+<line x1="66" y1="137.5" x2="70" y2="137.5" stroke="#333"/>
+<text x="62" y="140.5" text-anchor="end" font-family="Arial" font-size="10">87</text>
+<line x1="780.0" y1="400" x2="780.0" y2="404" stroke="#333"/>
+<text x="780.0" y="418" text-anchor="middle" font-family="Arial" font-size="10">2194</text>
+<line x1="66" y1="50.0" x2="70" y2="50.0" stroke="#333"/>
+<text x="62" y="53.0" text-anchor="end" font-family="Arial" font-size="10">1.2e+02</text>
+<rect x="70.00" y="390.99" width="28.58" height="9.01" fill="#5b9bd5" stroke="white"/>
+<rect x="99.58" y="384.99" width="28.58" height="15.01" fill="#5b9bd5" stroke="white"/>
+<rect x="129.17" y="372.98" width="28.58" height="27.02" fill="#5b9bd5" stroke="white"/>
+<rect x="158.75" y="312.95" width="28.58" height="87.05" fill="#5b9bd5" stroke="white"/>
+<rect x="188.33" y="258.92" width="28.58" height="141.08" fill="#5b9bd5" stroke="white"/>
+<rect x="217.92" y="231.90" width="28.58" height="168.10" fill="#5b9bd5" stroke="white"/>
+<rect x="247.50" y="249.91" width="28.58" height="150.09" fill="#5b9bd5" stroke="white"/>
+<rect x="277.08" y="312.95" width="28.58" height="87.05" fill="#5b9bd5" stroke="white"/>
+<rect x="306.67" y="270.93" width="28.58" height="129.07" fill="#5b9bd5" stroke="white"/>
+<rect x="336.25" y="306.95" width="28.58" height="93.05" fill="#5b9bd5" stroke="white"/>
+<rect x="365.83" y="309.95" width="28.58" height="90.05" fill="#5b9bd5" stroke="white"/>
+<rect x="395.42" y="246.91" width="28.58" height="153.09" fill="#5b9bd5" stroke="white"/>
+<rect x="425.00" y="198.89" width="28.58" height="201.11" fill="#5b9bd5" stroke="white"/>
+<rect x="454.58" y="237.91" width="28.58" height="162.09" fill="#5b9bd5" stroke="white"/>
+<rect x="484.17" y="261.92" width="28.58" height="138.08" fill="#5b9bd5" stroke="white"/>
+<rect x="513.75" y="198.89" width="28.58" height="201.11" fill="#5b9bd5" stroke="white"/>
+<rect x="543.33" y="198.89" width="28.58" height="201.11" fill="#5b9bd5" stroke="white"/>
+<rect x="572.92" y="216.90" width="28.58" height="183.10" fill="#5b9bd5" stroke="white"/>
+<rect x="602.50" y="111.84" width="28.58" height="288.16" fill="#5b9bd5" stroke="white"/>
+<rect x="632.08" y="81.82" width="28.58" height="318.18" fill="#5b9bd5" stroke="white"/>
+<rect x="661.67" y="165.87" width="28.58" height="234.13" fill="#5b9bd5" stroke="white"/>
+<rect x="691.25" y="297.94" width="28.58" height="102.06" fill="#5b9bd5" stroke="white"/>
+<rect x="720.83" y="384.99" width="28.58" height="15.01" fill="#5b9bd5" stroke="white"/>
+<rect x="750.42" y="394.00" width="28.58" height="6.00" fill="#5b9bd5" stroke="white"/>
+</svg>
