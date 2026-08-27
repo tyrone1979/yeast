@@ -1,6 +1,10 @@
 # Usage: sugar feed-rate prediction
 
-This example shows that the released dataset can train a simple sequence model to predict nutrient addition (`sugar_feed_rate_kg_rs_h`), and that `evaluation_profiles.csv` can be used for alcohol-profile tracking.
+This example trains a simple sequence model on the figshare dataset to predict nutrient addition (`sugar_feed_rate_kg_rs_h`).
+
+**Dataset:** https://doi.org/10.6084/m9.figshare.33201579
+
+On first run, `predict_sugar_feed.py` downloads the required CSV files into `dataset/` (or `--data-dir`).
 
 ## Scope (which files are used)
 
@@ -11,40 +15,30 @@ This example shows that the released dataset can train a simple sequence model t
 | `evaluation_profiles.csv` | Alcohol trajectory reference (MAE vs measured) |
 | `summary_stats.json` | Not used (paper statistics only) |
 
-The demo trains on the **full_process subset** (default excludes `B05`). The 51 sparse batches are not used for model training; they remain available for larger-sample or transfer studies.
+The demo trains on the **full_process subset** (default excludes `B05`).
 
 ## Task
 
 - **Input:** sliding window of recent process variables  
   `airflow_m3_h`, `volume_m3`, `ph`, `alcohol_vv_pct`, `cell_concentration_gpl`, `biomass_y30_kg`, `growth_modulus`
 - **Output:** current-hour sugar feed rate (`kg RS/h`)
-- **Data:** full-process batches `B01`–`B10` (default excludes `B05` due to anomalous `volume_m3`)
 - **Validation:** leave-one-batch-out
-
-## Models
-
-| `--model` | Description |
-|-----------|-------------|
-| `bilstm` (default) | Bidirectional LSTM + small MLP head |
-| `cnn` | 1D-CNN over the time window |
 
 ## Run
 
 ```bash
-# from repository root
 pip install -r requirements.txt
 
 python usage/predict_sugar_feed.py --model bilstm
 python usage/predict_sugar_feed.py --model cnn
-
-# alcohol vs evaluation profile only (no training)
 python usage/predict_sugar_feed.py --profile-only
 
-# include all full-process batches (including B05)
-python usage/predict_sugar_feed.py --exclude-batches ""
+# use pre-downloaded figshare files
+python usage/predict_sugar_feed.py --data-dir /path/to/csvs --no-download
 ```
 
-Metrics are printed per held-out batch and saved to `usage/results/lobo_metrics.json`. Profile MAE is saved to `usage/results/alcohol_profile_mae.json`.
+Metrics: `usage/results/lobo_metrics.json`  
+Profile MAE: `usage/results/alcohol_profile_mae.json`
 
 ## Example result (BiLSTM, exclude B05)
 
@@ -57,10 +51,8 @@ Leave-one-batch-out on 9 full-process batches (`seed=42`, `window=5`):
 | MAPE (%) | 11.6 | 11.6 |
 | R² | 0.872 | 0.873 |
 
-This supports reuse of the dataset for nutrient feed-rate prediction. Re-run to regenerate `usage/results/lobo_metrics.json`.
-
 ## Notes
 
-- Window length defaults to 5 hours (hourly industrial logs are short; ~17–18 points/batch).
+- Window length defaults to 5 hours.
 - Features are min–max scaled to `[-1, 1]` using training folds only.
-- Batch `B05` volume values are unusually large in the source data; excluded by default for the usage demo.
+- Batch `B05` volume values are unusually large; excluded by default.

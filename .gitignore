@@ -8,3 +8,5 @@ venv/
 Thumbs.db
 *.log
 .ipynb_checkpoints/
+dataset/
+data/
