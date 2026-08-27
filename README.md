@@ -2,8 +2,6 @@
 
 Industrial baker’s-yeast fed-batch fermentation records for **nutrient (sugar) feed-rate prediction**, with a *Data in Brief* manuscript draft and a simple deep-learning usage example.
 
-Repository: https://gitee.com/sacourse/yeast.git
-
 ## Overview
 
 | Item | Description |
