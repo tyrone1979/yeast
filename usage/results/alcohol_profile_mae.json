@@ -1,10 +1,8 @@
 {
-  "n_points": 161,
-  "n_batches": 9,
-  "mae_alcohol_vv_pct": 0.028490683229813667,
-  "excluded_batches": [
-    "B05"
-  ],
+  "n_points": 179,
+  "n_batches": 10,
+  "mae_alcohol_vv_pct": 0.029955307262569834,
+  "excluded_batches": [],
   "batches": [
     {
       "batch_id": "B01",
@@ -25,6 +23,11 @@
       "batch_id": "B04",
       "n": 18,
       "mae_alcohol_vv_pct": 0.0345
+    },
+    {
+      "batch_id": "B05",
+      "n": 18,
+      "mae_alcohol_vv_pct": 0.043055555555555555
     },
     {
       "batch_id": "B06",

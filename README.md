@@ -6,7 +6,7 @@ Industrial baker’s-yeast fed-batch fermentation records for **nutrient (sugar)
 
 | Item | Description |
 |------|-------------|
-| Dataset | [figshare](https://doi.org/10.6084/m9.figshare.33201579) — 61 batches, 1,127 hourly CSV records |
+| Dataset | [figshare](https://doi.org/10.6084/m9.figshare.33201579) — 59 batches, 1,090 hourly CSV records |
 | Prediction target | `sugar_feed_rate_kg_rs_h` (kg reducing sugar / h) |
 | This repo | Usage demo (BiLSTM / 1D-CNN leave-one-batch-out) |
 
@@ -42,7 +42,7 @@ python usage/predict_sugar_feed.py --model cnn
 python usage/predict_sugar_feed.py --profile-only
 ```
 
-Typical BiLSTM result (excluding anomalous-volume batch `B05`): pooled **MAE ≈ 102.5 kg RS/h**, **MAPE ≈ 11.6%**, **R² ≈ 0.872**. See `usage/results/lobo_metrics.json`.
+Typical BiLSTM result (all 10 full-process batches): pooled **MAE ≈ 99.1 kg RS/h**, **MAPE ≈ 10.5%**, **R² ≈ 0.901**. The 1D-CNN variant gives MAE ≈ 102.7, MAPE ≈ 11.1%, R² ≈ 0.893. See `usage/results/lobo_metrics.json` and `usage/results/lobo_metrics_cnn.json`.
 
 ## Dataset
 
@@ -52,9 +52,9 @@ https://doi.org/10.6084/m9.figshare.33201579
 
 Contents include `batch_metadata.csv`, `fermentation_timeseries.csv`, `evaluation_profiles.csv`, `summary_stats.json`, and `README.md` (column dictionary).
 
-- **61** production batches (strain ID `167`)
+- **59** production batches (strain ID `167`)
 - **10** `full_process` batches with rich covariates
-- **51** sparse batches mainly with alcohol / biomass / sugar feed
+- **49** sparse batches mainly with alcohol / biomass / sugar feed
 
 The usage script auto-downloads required CSVs into `dataset/` if that folder is empty. To use a custom path:
 
@@ -68,7 +68,7 @@ Predict current- or next-hour `sugar_feed_rate_kg_rs_h` from a short window of p
 
 ## Authors
 
-Changning Ren, Lei Zhao, Ling Kang, Quan Guo\*  
+Changning Ren, Lei Zhao, Yao Wu, Ling Kang, Quan Guo\*  
 
 \*Corresponding author: guoquan@neusoft.edu.cn  
 Dalian Neusoft University of Information, Dalian, China
@@ -76,7 +76,7 @@ Dalian Neusoft University of Information, Dalian, China
 ## Citation
 
 ```text
-Ren C., Zhao L., Kang L., Guo Q. An industrial yeast fed-batch fermentation
+Ren C., Zhao L., Wu Y., Kang L., Guo Q. An industrial yeast fed-batch fermentation
 dataset for nutrient feed-rate prediction. figshare (2026).
 https://doi.org/10.6084/m9.figshare.33201579
 ```

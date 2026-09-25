@@ -22,13 +22,15 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 
 ROOT = Path(__file__).resolve().parents[1]
+DATASET = ROOT / "dataset"
+
+# figshare deposit that hosts the dataset CSVs (see README / Data Availability).
 FIGSHARE_ARTICLE_ID = 33201579
-FIGSHARE_DOI = "https://doi.org/10.6084/m9.figshare.33201579"
-REQUIRED_DATA_FILES = (
+REQUIRED_DATASET_FILES = [
     "batch_metadata.csv",
     "fermentation_timeseries.csv",
     "evaluation_profiles.csv",
-)
+]
 
 FEATURE_COLS = [
     "airflow_m3_h",
@@ -53,6 +55,37 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(f))
 
 
+def ensure_dataset() -> Path:
+    """Download any missing dataset CSVs from the figshare deposit.
+
+    Keeps the repository code-only: on first run the required CSV files are
+    fetched from the figshare deposit (DOI 10.6084/m9.figshare.33201579)
+    into ./dataset/ and cached there.
+    """
+    missing = [f for f in REQUIRED_DATASET_FILES if not (DATASET / f).exists()]
+    if not missing:
+        return DATASET
+    import urllib.request
+
+    DATASET.mkdir(parents=True, exist_ok=True)
+    api_url = f"https://api.figshare.com/v2/articles/{FIGSHARE_ARTICLE_ID}"
+    print(f"Missing dataset files: {', '.join(missing)}")
+    print(f"Downloading from figshare deposit (DOI 10.6084/m9.figshare.{FIGSHARE_ARTICLE_ID}) ...")
+    with urllib.request.urlopen(api_url) as resp:
+        article = json.load(resp)
+    by_name = {f["name"]: f["download_url"] for f in article.get("files", [])}
+    for fname in missing:
+        url = by_name.get(fname)
+        if not url:
+            raise SystemExit(
+                f"File '{fname}' not found in figshare article {FIGSHARE_ARTICLE_ID}; "
+                "please download it manually from the deposit and place it in ./dataset/."
+            )
+        urllib.request.urlretrieve(url, DATASET / fname)
+        print(f"  downloaded {fname}")
+    return DATASET
+
+
 def to_float(v: str | None) -> float | None:
     if v is None or v == "":
         return None
@@ -70,53 +103,16 @@ class WindowSample:
     time_h: float
 
 
-def ensure_dataset(data_dir: Path) -> Path:
-    """Download CSV files from figshare if required files are missing."""
-    data_dir.mkdir(parents=True, exist_ok=True)
-    missing = [name for name in REQUIRED_DATA_FILES if not (data_dir / name).exists()]
-    if not missing:
-        return data_dir
-
-    import urllib.request
-
-    print(f"Dataset files missing in {data_dir}; downloading from figshare ({FIGSHARE_DOI}) ...")
-    with urllib.request.urlopen(
-        f"https://api.figshare.com/v2/articles/{FIGSHARE_ARTICLE_ID}"
-    ) as resp:
-        article = json.loads(resp.read().decode())
-    for item in article.get("files", []):
-        name = item.get("name")
-        url = item.get("download_url")
-        if not name or not url:
-            continue
-        dest = data_dir / name
-        if dest.exists():
-            continue
-        print(f"  -> {name}")
-        urllib.request.urlretrieve(url, dest)
-
-    still_missing = [name for name in REQUIRED_DATA_FILES if not (data_dir / name).exists()]
-    if still_missing:
-        raise FileNotFoundError(
-            f"Required dataset files still missing after download: {still_missing}. "
-            f"Download manually from {FIGSHARE_DOI}"
-        )
-    return data_dir
-
-
-def load_full_process_batches(
-    dataset_dir: Path,
-    exclude_batches: set[str] | None = None,
-) -> dict[str, list[dict]]:
+def load_full_process_batches(exclude_batches: set[str] | None = None) -> dict[str, list[dict]]:
     exclude_batches = exclude_batches or set()
-    meta = read_csv(dataset_dir / "batch_metadata.csv")
+    meta = read_csv(DATASET / "batch_metadata.csv")
     full_ids = {
         r["batch_id"]
         for r in meta
         if r.get("data_completeness") == "full_process"
         and r["batch_id"] not in exclude_batches
     }
-    rows = read_csv(dataset_dir / "fermentation_timeseries.csv")
+    rows = read_csv(DATASET / "fermentation_timeseries.csv")
     by_batch: dict[str, list[dict]] = {bid: [] for bid in sorted(full_ids)}
     for r in rows:
         bid = r["batch_id"]
@@ -138,8 +134,8 @@ def build_windows(by_batch: dict[str, list[dict]], window: int) -> list[WindowSa
             t = to_float(r.get("time_h"))
             if any(v is None for v in vals) or y is None or t is None:
                 continue
-            # Skip B05 volume anomaly scale issues by keeping raw values;
-            # normalization is batch-agnostic min-max later.
+            # B05 volume was corrected in the release; normalization is
+            # batch-agnostic min-max later.
             feats.append(vals)
             targets.append(y)
             times.append(t)
@@ -309,8 +305,8 @@ def build_model(name: str, n_features: int) -> nn.Module:
     raise ValueError(f"Unknown model: {name}")
 
 
-def load_evaluation_profiles(dataset_dir: Path) -> dict[float, dict[str, float | None]]:
-    rows = read_csv(dataset_dir / "evaluation_profiles.csv")
+def load_evaluation_profiles() -> dict[float, dict[str, float | None]]:
+    rows = read_csv(DATASET / "evaluation_profiles.csv")
     out: dict[float, dict[str, float | None]] = {}
     for r in rows:
         t = to_float(r.get("time_h"))
@@ -323,21 +319,18 @@ def load_evaluation_profiles(dataset_dir: Path) -> dict[float, dict[str, float |
     return out
 
 
-def alcohol_profile_tracking(
-    dataset_dir: Path,
-    exclude_batches: set[str] | None = None,
-) -> dict:
+def alcohol_profile_tracking(exclude_batches: set[str] | None = None) -> dict:
     """Compare measured alcohol to evaluation_profiles.csv (uses that file explicitly)."""
     exclude_batches = exclude_batches or set()
-    profiles = load_evaluation_profiles(dataset_dir)
-    meta = read_csv(dataset_dir / "batch_metadata.csv")
+    profiles = load_evaluation_profiles()
+    meta = read_csv(DATASET / "batch_metadata.csv")
     full_ids = {
         r["batch_id"]
         for r in meta
         if r.get("data_completeness") == "full_process"
         and r["batch_id"] not in exclude_batches
     }
-    rows = read_csv(dataset_dir / "fermentation_timeseries.csv")
+    rows = read_csv(DATASET / "fermentation_timeseries.csv")
     per_batch: list[dict] = []
     all_abs = []
     for bid in sorted(full_ids):
@@ -364,8 +357,11 @@ def alcohol_profile_tracking(
         "mae_alcohol_vv_pct": float(np.mean(all_abs)) if all_abs else float("nan"),
         "excluded_batches": sorted(exclude_batches),
         "batches": per_batch,
-        "source_files": list(REQUIRED_DATA_FILES),
-        "dataset_source": FIGSHARE_DOI,
+        "source_files": [
+            "batch_metadata.csv",
+            "fermentation_timeseries.csv",
+            "evaluation_profiles.csv",
+        ],
     }
     return overall
 
@@ -374,7 +370,7 @@ def run_lobo(args: argparse.Namespace) -> dict:
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() and not args.cpu else "cpu")
     exclude = {b.strip() for b in args.exclude_batches.split(",") if b.strip()}
-    by_batch = load_full_process_batches(args.data_dir, exclude_batches=exclude)
+    by_batch = load_full_process_batches(exclude_batches=exclude)
     samples = build_windows(by_batch, args.window)
     batches = sorted({s.batch_id for s in samples})
     if len(batches) < 3:
@@ -473,8 +469,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--cpu", action="store_true")
     p.add_argument(
         "--exclude-batches",
-        default="B05",
-        help="Comma-separated batch IDs to exclude (default: B05 volume anomaly)",
+        default="",
+        help="Comma-separated batch IDs to exclude (default: none; B05 volume was corrected in the release)",
     )
     p.add_argument(
         "--profile-only",
@@ -487,20 +483,15 @@ def parse_args() -> argparse.Namespace:
         help="Skip alcohol-profile tracking when training",
     )
     p.add_argument(
+        "--data-dir",
+        type=Path,
+        default=None,
+        help="Directory holding the dataset CSVs (default: ./dataset/; missing files are auto-downloaded from figshare)",
+    )
+    p.add_argument(
         "--out",
         type=Path,
         default=ROOT / "usage" / "results" / "lobo_metrics.json",
-    )
-    p.add_argument(
-        "--data-dir",
-        type=Path,
-        default=ROOT / "dataset",
-        help="Folder for figshare CSV files (auto-downloaded if missing)",
-    )
-    p.add_argument(
-        "--no-download",
-        action="store_true",
-        help="Do not auto-download from figshare when CSV files are missing",
     )
     p.add_argument(
         "--profile-out",
@@ -511,22 +502,16 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    global DATASET
     args = parse_args()
+    if args.data_dir is not None:
+        DATASET = args.data_dir if args.data_dir.is_absolute() else ROOT / args.data_dir
+    ensure_dataset()
     args.out.parent.mkdir(parents=True, exist_ok=True)
     exclude = {b.strip() for b in args.exclude_batches.split(",") if b.strip()}
 
-    if args.no_download:
-        missing = [f for f in REQUIRED_DATA_FILES if not (args.data_dir / f).exists()]
-        if missing:
-            raise FileNotFoundError(
-                f"Missing dataset files in {args.data_dir}: {missing}. "
-                f"Download from {FIGSHARE_DOI} or omit --no-download."
-            )
-    else:
-        ensure_dataset(args.data_dir)
-
     if not args.skip_profile or args.profile_only:
-        prof = alcohol_profile_tracking(args.data_dir, exclude_batches=exclude)
+        prof = alcohol_profile_tracking(exclude_batches=exclude)
         args.profile_out.write_text(json.dumps(prof, indent=2), encoding="utf-8")
         print(
             f"Alcohol vs evaluation_profiles: "
@@ -540,9 +525,12 @@ def main() -> None:
     result = run_lobo(args)
     payload = {k: v for k, v in result.items() if k != "folds"}
     payload["folds"] = result["folds"]
-    payload["dataset_files_used"] = list(REQUIRED_DATA_FILES)
+    payload["dataset_files_used"] = [
+        "batch_metadata.csv",
+        "fermentation_timeseries.csv",
+        "evaluation_profiles.csv",
+    ]
     payload["dataset_files_not_used"] = ["summary_stats.json", "README.md"]
-    payload["dataset_source"] = FIGSHARE_DOI
     args.out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(f"\nSaved metrics to {args.out}")
 
