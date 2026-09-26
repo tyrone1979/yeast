@@ -68,7 +68,7 @@ Predict current- or next-hour `sugar_feed_rate_kg_rs_h` from a short window of p
 
 ## Authors
 
-Changning Ren, Lei Zhao, Yao Wu, Ling Kang, Quan Guo\*  
+Changning Ren, Lei Zhao, Yao Wu, Li Han, Xinning Liu, Ling Kang, Quan Guo\*  
 
 \*Corresponding author: guoquan@neusoft.edu.cn  
 Dalian Neusoft University of Information, Dalian, China
@@ -76,7 +76,7 @@ Dalian Neusoft University of Information, Dalian, China
 ## Citation
 
 ```text
-Ren C., Zhao L., Wu Y., Kang L., Guo Q. An industrial yeast fed-batch fermentation
+Ren C., Zhao L., Wu Y., Han L., Liu X., Kang L., Guo Q. An industrial yeast fed-batch fermentation
 dataset for nutrient feed-rate prediction. figshare (2026).
 https://doi.org/10.6084/m9.figshare.33201579
 ```
