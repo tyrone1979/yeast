@@ -76,8 +76,6 @@ Dalian Neusoft University of Information, Dalian, China
 ## Citation
 
 ```text
-Ren C., Zhao L., Wu Y., Han L., Liu X., Kang L., Guo Q. An industrial yeast fed-batch fermentation
-dataset for nutrient feed-rate prediction. figshare (2026).
 https://doi.org/10.6084/m9.figshare.33201579
 ```
 
