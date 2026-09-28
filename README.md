@@ -66,12 +66,6 @@ python usage/predict_sugar_feed.py --data-dir /path/to/figshare_files
 
 Predict current- or next-hour `sugar_feed_rate_kg_rs_h` from a short window of process variables within each `batch_id`. Prefer leave-one-batch-out validation.
 
-## Authors
-
-Changning Ren, Lei Zhao, Yao Wu, Li Han, Xinning Liu, Ling Kang, Quan Guo\*  
-
-\*Corresponding author: guoquan@neusoft.edu.cn  
-Dalian Neusoft University of Information, Dalian, China
 
 ## Citation
 
